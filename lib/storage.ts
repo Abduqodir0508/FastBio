@@ -37,7 +37,7 @@ const INITIAL_MOCK_PRODUCTS: Product[] = [
     shop_id: 'a1b2c3d4-e5f6-7890-abcd-111111111111',
     title: 'Premium Qora Jinsi Shim',
     price: 320000,
-    image_url: 'https://images.unsplash.com/photo-1542272604-780c96856592?w=800&q=80',
+    image_url: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80',
     description: "Qulay va elastik yuqori sifatli qora jinsi shim. Yuvilganda rangi o'chmaydi.",
     created_at: new Date(Date.now() - 3600000 * 3).toISOString(),
   },

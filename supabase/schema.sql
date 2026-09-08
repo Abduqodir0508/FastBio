@@ -80,7 +80,7 @@ ON CONFLICT (slug) DO NOTHING;
 INSERT INTO public.products (shop_id, title, price, image_url, description)
 VALUES
   ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Klassik Erkaklar Ko''ylagi', 240000, 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80', '100% paxtadan tayyorlangan zamonaviy erkaklar ko''ylagi. Barcha o''lchamlar mavjud: S, M, L, XL.'),
-  ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Premium Qora Jinsi Shim', 320000, 'https://images.unsplash.com/photo-1542272604-780c96856592?w=800&q=80', 'Qulay va elastik yuqori sifatli qora jinsi shim. Yuvilganda rangi o''chmaydi.'),
+  ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Premium Qora Jinsi Shim', 320000, 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80', 'Qulay va elastik yuqori sifatli qora jinsi shim. Yuvilganda rangi o''chmaydi.'),
   ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Qishki Bomber Kurtka', 680000, 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80', 'Suv va shamol o''tkazmaydigan issiq kurtka. Ichki qismi yumshoq jun bilan qoplangan.'),
   ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Charm Erkaklar Kamari', 110000, 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=800&q=80', 'Tabiiy charmdan ishlangan klassik qora kamar.'),
   ('a1b2c3d4-e5f6-7890-abcd-222222222222', 'iPhone 16 Pro Max 256GB Desert Titanium', 17200000, 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=80', 'Yangi original Apple iPhone 16 Pro Max. 1 yil rasmiy kafolat bilan.'),
