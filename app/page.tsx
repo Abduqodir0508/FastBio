@@ -192,20 +192,17 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-slate-800/80 py-6 sm:py-8 bg-slate-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-slate-500 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <ShoppingBag className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="text-slate-400 font-semibold">FastBio</span>
-            <span>&copy; {new Date().getFullYear()} Barcha huquqlar himoyalangan.</span>
-          </div>
-          <div className="flex items-center gap-3 sm:gap-4 text-slate-400 text-[11px] sm:text-xs">
-            <span>Next.js App Router</span>
-            <span>&bull;</span>
-            <span>Tailwind CSS</span>
-            <span>&bull;</span>
-            <span>Supabase</span>
-          </div>
+      <footer className="mt-auto border-t border-slate-900 py-6 text-center text-sm bg-slate-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <a
+            href="https://t.me/A_Husanboyev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 text-zinc-400 hover:text-white transition-colors duration-200 group"
+          >
+            <Send className="w-4 h-4 text-sky-400 group-hover:scale-110 transition-transform" />
+            <span>Qo&apos;llab-quvvatlash / Savollar bo&apos;yicha: <strong className="text-zinc-300 group-hover:text-white font-medium">@A_Husanboyev</strong></span>
+          </a>
         </div>
       </footer>
 
