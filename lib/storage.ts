@@ -277,13 +277,54 @@ export async function createShop(
   return { shop: newShop };
 }
 
+export const FREE_PRODUCT_LIMIT = 8;
+export const PRO_PRODUCT_LIMIT = 500;
+
+export function getProductLimit(shop?: Shop | null): number {
+  if (!shop) return FREE_PRODUCT_LIMIT;
+  if (shop.custom_limit && shop.custom_limit > 0) return shop.custom_limit;
+  if (shop.is_pro) return PRO_PRODUCT_LIMIT;
+  return FREE_PRODUCT_LIMIT;
+}
+
 export async function createProduct(
   input: CreateProductInput
-): Promise<{ product: Product | null; error?: string }> {
+): Promise<{ product: Product | null; error?: string; limitReached?: boolean }> {
   if (isDemoShop(input.shop_id)) {
     return {
       product: null,
       error: "Bu namuna do'kon. O'zgartirish kiritish uchun o'z do'koningizni oching!",
+    };
+  }
+
+  // Check shop limits
+  let shop: Shop | null = null;
+  if (isSupabaseConfigured()) {
+    try {
+      const { data } = await supabase
+        .from('shops')
+        .select('*')
+        .eq('id', input.shop_id)
+        .maybeSingle();
+      if (data) shop = data as Shop;
+    } catch {
+      // Fallback
+    }
+  }
+
+  if (!shop) {
+    const shops = getLocalShops();
+    shop = shops.find((s) => s.id === input.shop_id) || null;
+  }
+
+  const existingProducts = await getProductsByShopId(input.shop_id);
+  const maxLimit = getProductLimit(shop);
+
+  if (existingProducts.length >= maxLimit) {
+    return {
+      product: null,
+      error: `Limitga yetildi! Sizning limitingiz: ${maxLimit} ta mahsulot. PRO tarifga o'ting!`,
+      limitReached: true,
     };
   }
 
@@ -325,6 +366,58 @@ export async function createProduct(
   saveLocalProducts([newProduct, ...products]);
 
   return { product: newProduct };
+}
+
+export async function upgradeShopToPro(
+  slugOrId: string,
+  isPro: boolean = true,
+  customLimit?: number
+): Promise<{ success: boolean; shop?: Shop; error?: string }> {
+  const normalized = slugOrId.toLowerCase().trim();
+
+  if (isSupabaseConfigured()) {
+    try {
+      const updateData: any = { is_pro: isPro };
+      if (customLimit !== undefined) updateData.custom_limit = customLimit;
+
+      const { data, error } = await supabase
+        .from('shops')
+        .update(updateData)
+        .or(`slug.eq.${normalized},id.eq.${normalized}`)
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+      if (data) {
+        return { success: true, shop: data as Shop };
+      }
+    } catch (err: any) {
+      return { success: false, error: err.message || "Xatolik yuz berdi" };
+    }
+  }
+
+  // Local Storage fallback
+  const shops = getLocalShops();
+  const index = shops.findIndex(
+    (s) => s.slug.toLowerCase() === normalized || s.id.toLowerCase() === normalized
+  );
+
+  if (index === -1) {
+    return { success: false, error: "Do'kon topilmadi" };
+  }
+
+  const updatedShop: Shop = {
+    ...shops[index],
+    is_pro: isPro,
+    custom_limit: customLimit !== undefined ? customLimit : shops[index].custom_limit,
+  };
+
+  shops[index] = updatedShop;
+  saveLocalShops(shops);
+
+  return { success: true, shop: updatedShop };
 }
 
 export async function updateProduct(

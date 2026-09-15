@@ -1,0 +1,16 @@
+{
+  "name": "fastbio-telegram-bot",
+  "version": "1.0.0",
+  "description": "FastBio PRO Activation and Receipt Confirmation Telegram Bot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.8",
+    "axios": "^1.6.8",
+    "dotenv": "^16.4.5",
+    "telegraf": "^4.16.3"
+  }
+}

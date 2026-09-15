@@ -10,8 +10,14 @@ CREATE TABLE IF NOT EXISTS public.shops (
     slug TEXT NOT NULL UNIQUE,
     telegram_username TEXT NOT NULL,
     admin_pin TEXT NOT NULL,
+    is_pro BOOLEAN DEFAULT false,
+    custom_limit INT DEFAULT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
+
+-- Migration query if table already exists:
+-- ALTER TABLE public.shops ADD COLUMN IF NOT EXISTS is_pro BOOLEAN DEFAULT false;
+-- ALTER TABLE public.shops ADD COLUMN IF NOT EXISTS custom_limit INT DEFAULT NULL;
 
 -- 2. Create products table
 CREATE TABLE IF NOT EXISTS public.products (

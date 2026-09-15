@@ -6,6 +6,8 @@ export interface Shop {
   admin_pin: string;
   description?: string;
   is_demo?: boolean;
+  is_pro?: boolean;
+  custom_limit?: number;
   created_at?: string;
 }
 

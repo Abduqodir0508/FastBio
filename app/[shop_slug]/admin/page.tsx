@@ -27,13 +27,15 @@ import {
   createProduct, 
   updateProduct, 
   deleteProduct,
-  isDemoShop
+  isDemoShop,
+  getProductLimit
 } from '@/lib/storage';
 import { Shop, Product, CreateProductInput, UpdateProductInput } from '@/lib/types';
 import { PinGatekeeper } from '@/components/PinGatekeeper';
 import { AdminProductList } from '@/components/AdminProductList';
 import { ProductFormModal } from '@/components/ProductFormModal';
 import { DeleteConfirmModal } from '@/components/DeleteConfirmModal';
+import UpgradeModal from '@/components/UpgradeModal';
 import { formatPrice } from '@/lib/utils';
 import { toast } from 'sonner';
 
@@ -50,6 +52,7 @@ export default function AdminDashboardPage() {
 
   // Modals state
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [deletingProduct, setDeletingProduct] = useState<Product | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -141,6 +144,9 @@ export default function AdminDashboardPage() {
       // CREATE
       const res = await createProduct(data as CreateProductInput);
       if (res.error || !res.product) {
+        if (res.limitReached) {
+          setIsUpgradeModalOpen(true);
+        }
         toast.error(res.error || "Mahsulot qo'shishda xatolik yuz berdi");
         return false;
       }
@@ -215,8 +221,9 @@ export default function AdminDashboardPage() {
     );
   }
 
-  // Calculate quick stats
+  // Calculate quick stats and limits
   const totalProductsCount = products.length;
+  const maxProductLimit = getProductLimit(shop);
   const totalValue = products.reduce((acc, p) => acc + (Number(p.price) || 0), 0);
   const averagePrice = totalProductsCount > 0 ? totalValue / totalProductsCount : 0;
 
@@ -235,17 +242,33 @@ export default function AdminDashboardPage() {
             </Link>
 
             <div className="min-w-0">
-              <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
                 <h1 className="text-sm sm:text-base font-bold text-white tracking-tight truncate">
                   {shop.name}
                 </h1>
                 <span className={`px-1.5 sm:px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold uppercase tracking-wider shrink-0 ${
                   isDemo 
                     ? 'bg-emerald-500/15 border border-emerald-500/30 text-emerald-300' 
-                    : 'bg-amber-400/10 border border-amber-400/20 text-amber-400'
+                    : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
                 }`}>
                   {isDemo ? 'Demo Mode' : 'Admin'}
                 </span>
+
+                {shop.is_pro ? (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300 shrink-0">
+                    <Sparkles className="w-3 h-3 text-amber-400" />
+                    ⭐ PRO Do'kon ({maxProductLimit} ta)
+                  </span>
+                ) : !isDemo ? (
+                  <button
+                    onClick={() => setIsUpgradeModalOpen(true)}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-900 hover:bg-amber-500/15 border border-slate-800 hover:border-amber-500/40 text-slate-300 hover:text-amber-300 transition-all shrink-0"
+                    title="PRO tarifga o'tish"
+                  >
+                    <Sparkles className="w-3 h-3 text-amber-400" />
+                    <span>Tarif: Bepul ({maxProductLimit} tagacha) — <strong className="text-amber-400 underline">PRO-ga o'tish</strong></span>
+                  </button>
+                ) : null}
               </div>
               <p className="text-[10px] sm:text-[11px] text-slate-400 font-mono truncate">
                 @{shop.telegram_username}
@@ -313,8 +336,14 @@ export default function AdminDashboardPage() {
               <span>Jami Mahsulotlar</span>
               <Package className="w-4 h-4 text-emerald-400" />
             </div>
-            <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white">
-              {totalProductsCount} <span className="text-xs text-slate-500 font-normal">ta</span>
+            <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white flex items-baseline gap-1.5">
+              <span>{totalProductsCount}</span>
+              <span className="text-xs text-slate-500 font-normal">/ {maxProductLimit} ta</span>
+              {!shop.is_pro && !isDemo && totalProductsCount >= maxProductLimit && (
+                <span className="ml-auto text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/30">
+                  Limit to'ldi
+                </span>
+              )}
             </div>
           </div>
 
@@ -362,6 +391,11 @@ export default function AdminDashboardPage() {
                 toast.error("Bu namuna do'kon. O'zgartirish kiritish uchun o'z do'koningizni oching!");
                 return;
               }
+              if (totalProductsCount >= maxProductLimit) {
+                toast.warning(`Limit tugadi! Sizda ${maxProductLimit} ta mahsulot limiti bor. PRO tarifga o'ting.`);
+                setIsUpgradeModalOpen(true);
+                return;
+              }
               setEditingProduct(null);
               setIsFormModalOpen(true);
             }}
@@ -403,6 +437,14 @@ export default function AdminDashboardPage() {
         isDeleting={isDeleting}
         onClose={() => setDeletingProduct(null)}
         onConfirm={handleDeleteProduct}
+      />
+
+      {/* Upgrade to PRO Modal */}
+      <UpgradeModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+        shop={shop}
+        currentProductCount={totalProductsCount}
       />
     </div>
   );
