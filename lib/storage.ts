@@ -10,7 +10,7 @@ const INITIAL_MOCK_SHOPS: Shop[] = [
     id: 'demo-shop-universal-id-001',
     name: "Sizning Do'koningiz",
     slug: DEMO_SHOP_SLUG,
-    telegram_username: 'demo_admin',
+    telegram_username: 'instalink_demo',
     admin_pin: '1234',
     description: "Namuna do'kon — tizim qanday ishlashini ko'rishingiz uchun.",
     is_demo: true,
@@ -57,8 +57,8 @@ const INITIAL_MOCK_PRODUCTS: Product[] = [
   },
 ];
 
-const LOCAL_STORAGE_SHOPS_KEY = 'instal_shops_data_v2';
-const LOCAL_STORAGE_PRODUCTS_KEY = 'instal_products_data_v2';
+const LOCAL_STORAGE_SHOPS_KEY = 'instal_shops_data_v3';
+const LOCAL_STORAGE_PRODUCTS_KEY = 'instal_products_data_v3';
 
 export function isDemoShop(shopIdOrSlug?: string | null): boolean {
   if (!shopIdOrSlug) return false;
@@ -93,6 +93,7 @@ function getLocalShops(): Shop[] {
           ...s,
           name: "Sizning Do'koningiz",
           slug: DEMO_SHOP_SLUG,
+          telegram_username: 'instalink_demo',
           description: "Namuna do'kon — tizim qanday ishlashini ko'rishingiz uchun.",
           is_demo: true,
         };

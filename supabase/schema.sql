@@ -73,17 +73,14 @@ USING (true);
 -- 7. Seed Initial Demo Shops & Products
 INSERT INTO public.shops (id, name, slug, telegram_username, admin_pin)
 VALUES 
-  ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Terra Pro Official', 'terra_pro', 'terrapro_support', '1234'),
-  ('a1b2c3d4-e5f6-7890-abcd-222222222222', 'Apple Zone Tashkent', 'apple_zone', 'applezone_tashkent', '7777')
+  ('demo-shop-universal-id-001', 'Sizning Do''koningiz', 'demo_shop', 'instalink_demo', '1234')
 ON CONFLICT (slug) DO NOTHING;
 
 INSERT INTO public.products (shop_id, title, price, image_url, description)
 VALUES
-  ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Klassik Erkaklar Ko''ylagi', 240000, 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80', '100% paxtadan tayyorlangan zamonaviy erkaklar ko''ylagi. Barcha o''lchamlar mavjud: S, M, L, XL.'),
-  ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Premium Qora Jinsi Shim', 320000, 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&q=80', 'Qulay va elastik yuqori sifatli qora jinsi shim. Yuvilganda rangi o''chmaydi.'),
-  ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Qishki Bomber Kurtka', 680000, 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80', 'Suv va shamol o''tkazmaydigan issiq kurtka. Ichki qismi yumshoq jun bilan qoplangan.'),
-  ('a1b2c3d4-e5f6-7890-abcd-111111111111', 'Charm Erkaklar Kamari', 110000, 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=800&q=80', 'Tabiiy charmdan ishlangan klassik qora kamar.'),
-  ('a1b2c3d4-e5f6-7890-abcd-222222222222', 'iPhone 16 Pro Max 256GB Desert Titanium', 17200000, 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=80', 'Yangi original Apple iPhone 16 Pro Max. 1 yil rasmiy kafolat bilan.'),
-  ('a1b2c3d4-e5f6-7890-abcd-222222222222', 'AirPods Pro 2 USB-C', 3100000, 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=800&q=80', 'Faol shovqinni bekor qilish (ANC) tizimiga ega yangi AirPods Pro 2.'),
-  ('a1b2c3d4-e5f6-7890-abcd-222222222222', 'Apple Watch Series 10 46mm', 5800000, 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&q=80', 'Eng yupqa va yorqin displeyli yangi avlod aqlli soat.')
+  ('demo-shop-universal-id-001', 'Klassik Erkaklar Ko''ylagi', 240000, 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80', '100% paxtadan tayyorlangan zamonaviy erkaklar ko''ylagi. Barcha o''lchamlar mavjud: S, M, L, XL.'),
+  ('demo-shop-universal-id-001', 'Simsiz Shovqinsiz Quloqchin', 450000, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80', 'Yuqori sifatli bass va qulay shovqinni bekor qiluvchi quloqchin. 30 soatgacha batareya quvvati.'),
+  ('demo-shop-universal-id-001', 'Smart Smart-Soat Active Fit', 580000, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80', 'Yurak urishi, qadamlar va sport rejimlarini o''lchovchi zamonaviy suvga chidamli aqlli soat.'),
+  ('demo-shop-universal-id-001', 'Klassik Charm Hamyon', 180000, 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80', 'Haqiqiy charmdan ishlangan ixcham va ko‘p bo‘lmali hamyon. Kundalik foydalanish uchun juda qulay.')
 ON CONFLICT DO NOTHING;
+

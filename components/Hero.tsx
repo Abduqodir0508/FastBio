@@ -136,7 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCreateModal }) => {
                       <span>Sizning Do'koningiz</span>
                       <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 text-slate-950 inline-flex items-center justify-center text-[8px] font-black">✓</span>
                     </h3>
-                    <p className="text-[9px] sm:text-[10px] text-slate-400">@demo_admin</p>
+                    <p className="text-[9px] sm:text-[10px] text-slate-400">@instalink_demo</p>
                   </div>
                   <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[8px] sm:text-[9px] font-medium">
                     <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />

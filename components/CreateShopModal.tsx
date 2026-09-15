@@ -329,7 +329,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                   <input
                     type="text"
                     required
-                    placeholder="terrapro_manager"
+                    placeholder="sizning_dokon_bot"
                     value={telegramUsername}
                     onChange={handleTelegramChange}
                     className="w-full pl-8 pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm text-white placeholder-slate-500 outline-none transition-all"
