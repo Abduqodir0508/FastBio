@@ -1,7 +1,19 @@
 const { Telegraf, Markup } = require('telegraf');
+const http = require('http');
 
-const BOT_TOKEN = '8866418532:AAHnV3QnpglIz9v3Aq_L5QKUDGLf0zH9ZO8';
+const BOT_TOKEN = process.env.BOT_TOKEN || '8866418532:AAHnV3QnpglIz9v3Aq_L5QKUDGLf0zH9ZO8';
 const bot = new Telegraf(BOT_TOKEN);
+
+// Render Web Service 24/7 Health Check Ping Server
+const PORT = process.env.PORT || 3000;
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+  res.end('FastBio PRO Bot is running 24/7 on Render!');
+});
+
+server.listen(PORT, () => {
+  console.log(`🌐 Health check server listening on port ${PORT}`);
+});
 
 // Start bosilganda chiqadigan xabar
 bot.start((ctx) => {
@@ -70,5 +82,11 @@ bot.launch()
   });
 
 // Xatolik va to'xtatishlarni ushlash
-process.once('SIGINT', () => bot.stop('SIGINT'));
-process.once('SIGTERM', () => bot.stop('SIGTERM'));
+process.once('SIGINT', () => {
+  server.close();
+  bot.stop('SIGINT');
+});
+process.once('SIGTERM', () => {
+  server.close();
+  bot.stop('SIGTERM');
+});
