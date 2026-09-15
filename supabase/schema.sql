@@ -1,5 +1,5 @@
 -- ==============================================================================
--- Insta.Link - Multi-Tenant E-Commerce Link-in-Bio Database Schema
+-- FastBio - Multi-Tenant E-Commerce Link-in-Bio Database Schema
 -- Run this in your Supabase SQL Editor: https://supabase.com/dashboard/project/_/sql
 -- ==============================================================================
 
@@ -73,7 +73,7 @@ USING (true);
 -- 7. Seed Initial Demo Shops & Products
 INSERT INTO public.shops (id, name, slug, telegram_username, admin_pin)
 VALUES 
-  ('demo-shop-universal-id-001', 'Sizning Do''koningiz', 'demo_shop', 'instalink_demo', '1234')
+  ('demo-shop-universal-id-001', 'Sizning Do''koningiz', 'demo_shop', 'fastbio_demo', '1234')
 ON CONFLICT (slug) DO NOTHING;
 
 INSERT INTO public.products (shop_id, title, price, image_url, description)

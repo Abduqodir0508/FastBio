@@ -84,7 +84,7 @@ export default function HomePage() {
               </div>
               <h4 className="text-lg sm:text-xl font-bold text-white">Havolani ulashing</h4>
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                Tayyor <span className="text-emerald-400 font-mono text-[11px] sm:text-xs">sayt.uz/sizning_dokon</span> havolasini Instagram va Telegram bioga qo'ying va buyurtmalarni oling!
+                Tayyor <span className="text-emerald-400 font-mono text-[11px] sm:text-xs">fastbio.uz/sizning_dokon</span> havolasini Instagram va Telegram bioga qo'ying va buyurtmalarni oling!
               </p>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default function HomePage() {
                     <span className="w-4 h-4 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center text-[10px] font-bold">✓</span>
                   </h4>
                   <p className="text-xs text-slate-400 font-mono">
-                    sayt.uz/{DEMO_SHOP_SLUG}
+                    fastbio.uz/{DEMO_SHOP_SLUG}
                   </p>
                 </div>
               </div>
@@ -196,7 +196,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-slate-500 text-center sm:text-left">
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="text-slate-400 font-semibold">Insta.Link</span>
+            <span className="text-slate-400 font-semibold">FastBio</span>
             <span>&copy; {new Date().getFullYear()} Barcha huquqlar himoyalangan.</span>
           </div>
           <div className="flex items-center gap-3 sm:gap-4 text-slate-400 text-[11px] sm:text-xs">

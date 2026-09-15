@@ -141,7 +141,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
 
   const fullPublicUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/${createdShop?.slug || slug}` 
-    : `sayt.uz/${createdShop?.slug || slug}`;
+    : `fastbio.uz/${createdShop?.slug || slug}`;
 
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
@@ -152,8 +152,8 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
   };
 
   const handleGoToAdmin = () => {
+    onClose();
     if (createdShop) {
-      onClose();
       router.push(`/${createdShop.slug}/admin`);
     }
   };
@@ -263,14 +263,14 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
             </div>
 
             {error && (
-              <div className="mb-5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2.5">
+              <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Shop Name */}
+              {/* Store Name */}
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
                   <Store className="w-3.5 h-3.5 text-emerald-400" />
@@ -279,33 +279,33 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                 <input
                   type="text"
                   required
-                  placeholder="Masalan: Terra Pro Toshkent"
+                  placeholder="Masalan: Modiy Kiyimlar"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm text-white placeholder-slate-500 outline-none transition-all"
                 />
               </div>
 
-              {/* Shop Slug & Live URL Preview */}
+              {/* Store Slug / URL */}
               <div>
                 <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Globe className="w-3.5 h-3.5 text-sky-400" />
-                    <span>Do'kon havolasi (slug) *</span>
+                    <Globe className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>Do'kon manzili (Slug) *</span>
                   </span>
-                  <span className="text-[11px] text-slate-400">Masalan: terra_pro</span>
+                  <span className="text-[11px] text-slate-400">havola uchun</span>
                 </label>
                 <div className="relative flex items-center">
                   <span className="absolute left-3.5 text-xs text-slate-500 font-mono select-none">
-                    sayt.uz/
+                    fastbio.uz/
                   </span>
                   <input
                     type="text"
                     required
-                    placeholder="terra_pro"
+                    placeholder="modiy_kiyimlar"
                     value={slug}
                     onChange={handleSlugChange}
-                    className="w-full pl-20 pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm font-mono text-emerald-300 placeholder-slate-600 outline-none transition-all"
+                    className="w-full pl-[95px] pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm font-mono text-emerald-400 placeholder-slate-600 outline-none transition-all"
                   />
                 </div>
                 <p className="text-[11px] text-slate-400 mt-1">

@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-  title: 'Insta.Link - Multi-Tenant E-Commerce Link-in-Bio for Instagram & Telegram',
-  description: 'Create your sleek Link-in-Bio store in 1 minute. Sell products and receive direct orders on Telegram with zero commission.',
+  title: 'FastBio - Multi-Tenant E-Commerce Link-in-Bio for Instagram & Telegram',
+  description: 'FastBio orqali Instagram va Telegram do\'koningiz uchun 1 daqiqada zamonaviy Link-in-Bio katalog oching va buyurtmalarni Telegramda qabul qiling.',
 };
 
 export default function RootLayout({

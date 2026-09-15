@@ -46,7 +46,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCreateModal }) => {
 
             <p className="text-xs sm:text-base lg:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
               Do'koningizni 1 daqiqada ishga tushiring. Mahsulotlaringizni joylang, 
-              shaxsiy havola oling (<span className="text-emerald-400 font-mono font-medium">sayt.uz/{DEMO_SHOP_SLUG}</span>) 
+              shaxsiy havola oling (<span className="text-emerald-400 font-mono font-medium">fastbio.uz/{DEMO_SHOP_SLUG}</span>) 
               va mijozlardan to'g'ridan-to'g'ri Telegram orqali avtomatik xabar shaklida buyurtma qabul qiling!
             </p>
 
@@ -136,7 +136,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenCreateModal }) => {
                       <span>Sizning Do'koningiz</span>
                       <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 text-slate-950 inline-flex items-center justify-center text-[8px] font-black">✓</span>
                     </h3>
-                    <p className="text-[9px] sm:text-[10px] text-slate-400">@instalink_demo</p>
+                    <p className="text-[9px] sm:text-[10px] text-slate-400">@fastbio_demo</p>
                   </div>
                   <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[8px] sm:text-[9px] font-medium">
                     <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />

@@ -1,19 +1,16 @@
-# 🛍️ Insta.Link - Multi-Tenant Link-in-Bio E-Commerce
+# 🛍️ FastBio - Multi-Tenant Link-in-Bio E-Commerce
 
 Zamonaviy Instagram va Telegram do'konlari uchun Link-in-Bio e-commerce veb ilovasi. 
-**Next.js (App Router)**, **Tailwind CSS**, **Lucide React** va **Supabase** asosida yaratilgan.
+Foydalanuvchilar o'zlarining shaxsiy do'konlarini 1 daqiqada yaratishlari, mahsulotlarni boshqarishlari va xaridorlardan to'g'ridan-to'g'ri Telegram orqali avtomatik buyurtmalarni qabul qilishlari mumkin.
 
----
+## 🚀 Asosiy Imkoniyatlar
 
-## 🌟 Imkoniyatlar (Features)
-
-1. **Bosh Sahifa (`/`)**:
-   - Zamonaviy Dark-mode dizayn va interaktiv telefon preview maketi.
-   - Do'kon ochish modali (Do'kon nomi, URL slug, Telegram username, Admin PIN).
-   - Real-time slug generator va havola tekshiruvi.
-   - Do'kon ochilgach darhol do'kon havolasini taqdim etish va `/[slug]/admin` ga yo'naltirish.
-
-2. **Mijoz Vitrinasi (`/[shop_slug]`)**:
+1. **Multi-Tenant Architecture**: Har bir do'kon o'zining unikal manziliga (`fastbio.uz/dokon_nomi`) ega bo'ladi.
+2. **Tezkor Do'kon Yaratish**: 1 daqiqada do'kon nomi, manzili (slug) va 4 xonali PIN-kod orqali do'kon ochish.
+3. **PIN-Himoyalangan Admin Panel**: Har bir do'kon egasi o'zining PIN-kodi orqali mahsulot qo'shish, tahrirlash va o'chirish imkoniyatiga ega.
+4. **Telegram bilan Integratsiya**: Xaridor mahsulotni tanlab buyurtma berish tugmasini bosganda, barcha ma'lumotlar bilan tayyor xabar avtomatik sotuvchining Telegramiga yo'naltiriladi.
+5. **Zamonaviy Mobil-Birinchi Dizayn (Mobile-First)**:
+   - Next.js 14 App Router, Tailwind CSS, Lucide Icons, Glassmorphism va zamonaviy qora rejim (Dark Mode).
    - Mobil-moslashtirilgan Instagram Link-in-Bio dizayni.
    - Do'kon ma'lumotlari, Telegram kontakt tugmasi va Admin Panelga o'tish tugmasi.
    - Mahsulotlar qidiruvi va filtratsiyasi.

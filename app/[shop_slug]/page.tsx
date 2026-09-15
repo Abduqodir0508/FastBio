@@ -119,10 +119,10 @@ export default function ShopCatalogPage() {
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Insta.Link</span>
+            <span>FastBio</span>
           </Link>
 
           <div className="flex items-center gap-2">
@@ -194,7 +194,7 @@ export default function ShopCatalogPage() {
                   {shop.name}
                 </h1>
                 <p className="text-xs text-slate-400 font-mono">
-                  sayt.uz/{shop.slug}
+                  fastbio.uz/{shop.slug}
                 </p>
                 {shop.description && (
                   <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto pt-0.5">
@@ -283,7 +283,7 @@ export default function ShopCatalogPage() {
       <footer className="border-t border-slate-900 py-6 text-center text-xs text-slate-500">
         <Link href="/" className="hover:text-slate-400 transition-colors inline-flex items-center gap-1">
           <span>Powered by</span>
-          <span className="font-semibold text-emerald-400">Insta.Link</span>
+          <span className="font-semibold text-emerald-400">FastBio</span>
         </Link>
       </footer>
     </div>

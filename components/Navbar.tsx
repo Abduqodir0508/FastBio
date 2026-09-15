@@ -19,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCreateModal }) => {
           </div>
           <div className="flex flex-col">
             <span className="text-lg sm:text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-              Insta<span className="text-emerald-400">.Link</span>
+              Fast<span className="text-emerald-400">Bio</span>
             </span>
             <span className="text-[9px] sm:text-[10px] text-slate-400 -mt-0.5 sm:-mt-1 font-medium tracking-wide">
               E-Commerce Bio Store
