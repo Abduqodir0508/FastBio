@@ -15,16 +15,14 @@ module.exports = {
     btn_contact_admin: "📞 Admin bilan bog'lanish",
     btn_change_lang: "🌐 Tilni o'zgartirish",
     
-    pricing_text: `💎 <b>FastBio PRO Imkoniyatlari va Ta'riflar:</b>\n\n` +
-      `⚡ <b>Imkoniyatlar:</b>\n` +
-      `• 500 tagacha mahsulot va yuqori sifatli rasmlar\n` +
-      `• ⭐ PRO Verified rasmiy nishon\n` +
-      `• Yuqori tezlik va ustuvor qidiruv\n` +
-      `• 24/7 Shaxsiy qo'llab-quvvatlash\n\n` +
-      `💳 <b>To'lov ma'lumotlari:</b>\n` +
-      `• Narxi: <b>49 000 UZS / oy</b> (yoki <b>299 000 UZS / umrbod</b>)\n` +
-      `• Karta: <code>8600 0000 0000 0000</code> (Husanboyev A.)\n\n` +
-      `To'lovni amalga oshirib, chekni ushbu botga yuboring!`,
+    pricing_text: `💎 <b>FastBio PRO tarifi:</b>\n` +
+      `• 500 tagacha mahsulot va rasm qo'shish\n` +
+      `• Cheksiz mijozlar va buyurtmalar\n` +
+      `• Do'konga 'PRO' nishoni (Badge)\n\n` +
+      `💰 <b>Narxi:</b> 150 000 so'm\n` +
+      `💳 <b>To'lov uchun karta:</b> <code>[KARTA_RAQAMI]</code> (Karta egasi: [ISM_FAMILIYA])\n\n` +
+      `To'lovni amalga oshirgach, chekni (skrinshot yoki PDF) va do'koningiz nomini (havolasini) shu yerga yuboring.\n` +
+      `Aloqa / Yordam: @A_Husanboyev`,
 
     ask_shop_slug: "✍️ PRO faollashtirmoqchi bo'lgan <b>do'koningiz manzilini (slug)</b> kiriting:\n\n<i>Masalan: my_brand (fastbio.uz/my_brand)</i>",
     shop_detected: (slug) => `🏪 Tanlangan do'kon: <b>${slug}</b>\n(Havola: fastbio.uz/${slug})`,
@@ -73,16 +71,14 @@ module.exports = {
     btn_contact_admin: "📞 Связаться с админом",
     btn_change_lang: "🌐 Сменить язык",
     
-    pricing_text: `💎 <b>Возможности и Тарифы FastBio PRO:</b>\n\n` +
-      `⚡ <b>Преимущества:</b>\n` +
-      `• До 500 товаров и фото высокого качества\n` +
-      `• ⭐ Официальный значок PRO Verified\n` +
-      `• Максимальная скорость и приоритет в поиске\n` +
-      `• Круглосуточная поддержка 24/7\n\n` +
-      `💳 <b>Реквизиты для оплаты:</b>\n` +
-      `• Стоимость: <b>49 000 UZS / мес</b> (или <b>299 000 UZS / навсегда</b>)\n` +
-      `• Карта: <code>8600 0000 0000 0000</code> (Husanboyev A.)\n\n` +
-      `После оплаты отправьте чек в этот бот!`,
+    pricing_text: `💎 <b>Тариф FastBio PRO:</b>\n` +
+      `• До 500 товаров и фотографий\n` +
+      `• Неограниченное количество заказов\n` +
+      `• Отметка 'PRO' для магазина\n\n` +
+      `💰 <b>Стоимость:</b> 150 000 сум\n` +
+      `💳 <b>Карта для оплаты:</b> <code>[KARTA_RAQAMI]</code> (Имя владельца: [ISM_FAMILIYA])\n\n` +
+      `После оплаты отправьте чек (скриншот или PDF) и название вашего магазина сюда.\n` +
+      `Поддержка: @A_Husanboyev`,
 
     ask_shop_slug: "✍️ Введите <b>адрес (slug) вашего магазина</b>:\n\n<i>Например: my_brand (fastbio.uz/my_brand)</i>",
     shop_detected: (slug) => `🏪 Выбранный магазин: <b>${slug}</b>\n(Ссылка: fastbio.uz/${slug})`,
@@ -130,16 +126,14 @@ module.exports = {
     btn_contact_admin: "📞 Contact Support",
     btn_change_lang: "🌐 Change Language",
     
-    pricing_text: `💎 <b>FastBio PRO Features & Pricing:</b>\n\n` +
-      `⚡ <b>Features:</b>\n` +
-      `• Up to 500 products & HD images\n` +
-      `• ⭐ PRO Verified Badge\n` +
-      `• Ultra fast loading & priority indexing\n` +
-      `• 24/7 Dedicated Support\n\n` +
-      `💳 <b>Payment Details:</b>\n` +
-      `• Price: <b>49,000 UZS / month</b> (or <b>299,000 UZS / lifetime</b>)\n` +
-      `• Card: <code>8600 0000 0000 0000</code> (Husanboyev A.)\n\n` +
-      `Complete the payment and send the receipt to this bot!`,
+    pricing_text: `💎 <b>FastBio PRO Plan:</b>\n` +
+      `• Up to 500 products and images\n` +
+      `• Unlimited orders and customers\n` +
+      `• Exclusive 'PRO' badge for your store\n\n` +
+      `💰 <b>Price:</b> 150 000 UZS\n` +
+      `💳 <b>Card number:</b> <code>[KARTA_RAQAMI]</code> (Cardholder: [ISM_FAMILIYA])\n\n` +
+      `After payment, please send the payment receipt and your shop name here.\n` +
+      `Support: @A_Husanboyev`,
 
     ask_shop_slug: "✍️ Please enter your <b>shop address (slug)</b>:\n\n<i>Example: my_brand (fastbio.uz/my_brand)</i>",
     shop_detected: (slug) => `🏪 Selected Shop: <b>${slug}</b>\n(Link: fastbio.uz/${slug})`,
