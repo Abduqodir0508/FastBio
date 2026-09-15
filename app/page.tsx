@@ -14,7 +14,9 @@ import {
   ShieldCheck,
   Zap,
   Send,
-  Eye
+  Eye,
+  Check,
+  X
 } from 'lucide-react';
 import { getShopBySlug, DEMO_SHOP_SLUG } from '@/lib/storage';
 import { Shop } from '@/lib/types';
@@ -160,6 +162,135 @@ export default function HomePage() {
                 <span>Admin panel interfeysi</span>
                 <ExternalLink className="w-4 h-4" />
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing / Qulayliklar Section */}
+      <section className="py-14 sm:py-20 bg-slate-900/30 border-y border-slate-850 border-slate-800/60 relative">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-xl mx-auto mb-10 sm:mb-14 space-y-2">
+            <span className="text-[11px] sm:text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+              Tariflar & Qulayliklar
+            </span>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+              Mos tarifni tanlang
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-400">
+              Biznesingizni bepul boshlang yoki PRO tarif bilan imkoniyatlarni kengaytiring
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+            {/* Card 1: Bepul (Start) */}
+            <div className="rounded-3xl bg-slate-900/80 border border-slate-800 p-6 sm:p-8 flex flex-col justify-between transition-all hover:border-slate-700 shadow-lg">
+              <div className="space-y-5">
+                <div>
+                  <h4 className="text-lg font-bold text-white">Bepul (Start)</h4>
+                  <p className="text-xs text-slate-400 mt-1">Yangi boshlovchilar va kichik loyihalar uchun</p>
+                </div>
+
+                <div className="flex items-baseline gap-1.5 pt-1">
+                  <span className="text-3xl sm:text-4xl font-extrabold text-white">0</span>
+                  <span className="text-slate-400 text-sm font-semibold">so&apos;m</span>
+                  <span className="text-xs text-slate-500 ml-1">/ doimiy</span>
+                </div>
+
+                <div className="space-y-3 pt-4 border-t border-slate-800 text-xs sm:text-sm text-slate-300">
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>Maksimal <b>8 tagacha</b> mahsulot / rasm</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>Standart Telegram orqali buyurtma</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span><b>0% komissiya</b> (barcha tushum sizda)</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>Oddiy do&apos;kon havolasi</span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-slate-500">
+                    <X className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
+                    <span>8 tadan ortiq mahsulot qo&apos;shib bo&apos;lmaydi</span>
+                  </div>
+                  <div className="flex items-start gap-2.5 text-slate-500">
+                    <X className="w-4 h-4 text-slate-600 shrink-0 mt-0.5" />
+                    <span>Do&apos;konda maxsus PRO nishoni bo&apos;lmaydi</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <button
+                  onClick={() => setIsCreateModalOpen(true)}
+                  className="w-full py-3.5 px-5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-sm transition-all hover:scale-[1.01] active:scale-[0.99] border border-slate-700 shadow-md"
+                >
+                  Do&apos;kon ochish
+                </button>
+              </div>
+            </div>
+
+            {/* Card 2: PRO Tarif (Highlighted) */}
+            <div className="relative rounded-3xl bg-gradient-to-b from-slate-900 to-slate-950 border-2 border-amber-500/50 p-6 sm:p-8 flex flex-col justify-between shadow-2xl shadow-amber-500/10 transition-all hover:border-amber-400/80">
+              {/* Badge */}
+              <div className="absolute -top-3.5 right-6 px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 text-slate-950 text-[11px] font-black uppercase tracking-wider shadow-lg shadow-amber-500/20">
+                ⭐ Tavsiya etiladi
+              </div>
+
+              <div className="space-y-5">
+                <div>
+                  <h4 className="text-lg font-bold text-amber-300 flex items-center gap-1.5">
+                    <span>PRO Do&apos;kon</span>
+                    <Sparkles className="w-4 h-4 text-amber-400" />
+                  </h4>
+                  <p className="text-xs text-slate-400 mt-1">Katta assortiment va professional bizneslar uchun</p>
+                </div>
+
+                <div className="flex items-baseline gap-1.5 pt-1">
+                  <span className="text-3xl sm:text-4xl font-black text-white">150 000</span>
+                  <span className="text-amber-400 text-sm font-bold">so&apos;m</span>
+                  <span className="text-xs text-slate-400 ml-1">/ to&apos;liq faollashtirish</span>
+                </div>
+
+                <div className="space-y-3 pt-4 border-t border-amber-500/20 text-xs sm:text-sm text-slate-200">
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <span><b>500 tagacha</b> mahsulot va fotosuratlar</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <span>Cheksiz mijozlar va buyurtmalar oqimi</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <span>Do&apos;kon nomiga maxsus oltin <b>&quot;⭐ PRO&quot;</b> belgisi</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <span>Yuqori yuklanish tezligi va ustuvor qo&apos;llab-quvvatlash</span>
+                  </div>
+                  <div className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <span>Limitni 500 tadan ham ko&apos;paytirish imkoniyati (@A_Husanboyev orqali)</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-8">
+                <a
+                  href="https://t.me/fastbiopro_bot"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-orange-500 hover:brightness-110 text-slate-950 font-bold text-sm sm:text-base transition-all shadow-lg shadow-amber-500/25 hover:scale-[1.01] active:scale-[0.99]"
+                >
+                  <span>PRO tarifni olish ⚡</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
