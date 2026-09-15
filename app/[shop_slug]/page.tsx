@@ -15,9 +15,11 @@ import {
   Share2,
   Check,
   Sparkles,
-  Store
+  Store,
+  Eye,
+  Info
 } from 'lucide-react';
-import { getShopBySlug, getProductsByShopId } from '@/lib/storage';
+import { getShopBySlug, getProductsByShopId, isDemoShop } from '@/lib/storage';
 import { Shop, Product } from '@/lib/types';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductDetailModal } from '@/components/ProductDetailModal';
@@ -76,31 +78,33 @@ export default function ShopCatalogPage() {
   if (!loading && (notFound || !shop)) {
     return (
       <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20 flex items-center justify-center mb-4">
-          <Store className="w-8 h-8" />
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-red-500/10 text-red-400 border border-red-500/20 flex items-center justify-center mb-4">
+          <Store className="w-7 h-7 sm:w-8 sm:h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-white mb-2">Do'kon topilmadi</h1>
-        <p className="text-sm text-slate-400 max-w-sm mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-white mb-2">Do'kon topilmadi</h1>
+        <p className="text-xs sm:text-sm text-slate-400 max-w-sm mb-6">
           <span className="font-mono text-white">"/{slug}"</span> nomli do'kon mavjud emas yoki o'chirilgan bo'lishi mumkin.
         </p>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xs">
           <Link
             href="/"
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-2 transition-colors"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Bosh sahifaga qaytish</span>
+            <span>Bosh sahifaga</span>
           </Link>
           <Link
             href="/"
-            className="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-lg"
+            className="flex-1 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold text-center transition-all shadow-lg"
           >
-            O'z do'koningizni oching
+            Do'kon ochish
           </Link>
         </div>
       </div>
     );
   }
+
+  const isDemo = shop ? (shop.is_demo || isDemoShop(shop.slug)) : false;
 
   // Filter products by search
   const filteredProducts = products.filter((p) =>
@@ -109,7 +113,7 @@ export default function ShopCatalogPage() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-emerald-500 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-emerald-500 selection:text-slate-950 overflow-x-hidden">
       {/* Top Header Bar */}
       <header className="sticky top-0 z-30 w-full border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
@@ -140,17 +144,29 @@ export default function ShopCatalogPage() {
         </div>
       </header>
 
+      {/* Demo Store Notice Banner if Demo */}
+      {isDemo && (
+        <div className="bg-emerald-950/60 border-b border-emerald-500/20 py-2 px-4 text-center">
+          <div className="max-w-3xl mx-auto flex items-center justify-center gap-2 text-xs text-emerald-300">
+            <Info className="w-3.5 h-3.5 shrink-0 text-emerald-400" />
+            <span>
+              Bu <strong>Namuna Do'kon</strong> (Demo mode). Tizim mijozlarga qanday ko'rinishini sinab ko'ryapsiz.
+            </span>
+          </div>
+        </div>
+      )}
+
       {/* Main Container - Mobile First Bio Layout */}
-      <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-6 sm:py-8 space-y-6">
+      <main className="flex-1 max-w-3xl w-full mx-auto px-4 py-5 sm:py-8 space-y-5 sm:space-y-6">
         {loading ? (
           /* Shimmer Loading State */
           <div className="space-y-6 animate-pulse">
             <div className="flex flex-col items-center space-y-3 text-center">
-              <div className="w-20 h-20 bg-slate-800 rounded-3xl" />
-              <div className="w-48 h-6 bg-slate-800 rounded-lg" />
-              <div className="w-32 h-4 bg-slate-800 rounded-lg" />
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-slate-800 rounded-3xl" />
+              <div className="w-40 sm:w-48 h-5 sm:h-6 bg-slate-800 rounded-lg" />
+              <div className="w-28 sm:w-32 h-3.5 sm:h-4 bg-slate-800 rounded-lg" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="aspect-[3/4] bg-slate-900 rounded-2xl" />
               ))}
@@ -159,27 +175,32 @@ export default function ShopCatalogPage() {
         ) : shop ? (
           <>
             {/* Shop Profile Header (Link-in-Bio Style) */}
-            <div className="flex flex-col items-center text-center space-y-3 pt-2">
+            <div className="flex flex-col items-center text-center space-y-2.5 sm:space-y-3 pt-1 sm:pt-2">
               {/* Store Avatar */}
               <div className="relative">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-sky-400 p-0.5 shadow-xl shadow-emerald-950/40">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-3xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-sky-400 p-0.5 shadow-xl shadow-emerald-950/40">
                   <div className="w-full h-full bg-slate-900 rounded-[22px] flex items-center justify-center">
-                    <ShoppingBag className="w-10 h-10 sm:w-12 sm:h-12 text-emerald-400" />
+                    <ShoppingBag className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-emerald-400" />
                   </div>
                 </div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-xs shadow-md">
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-[10px] sm:text-xs shadow-md">
                   ✓
                 </div>
               </div>
 
               {/* Shop Name & Details */}
               <div className="space-y-1">
-                <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                <h1 className="text-lg sm:text-2xl font-black text-white tracking-tight">
                   {shop.name}
                 </h1>
                 <p className="text-xs text-slate-400 font-mono">
                   sayt.uz/{shop.slug}
                 </p>
+                {shop.description && (
+                  <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto pt-0.5">
+                    {shop.description}
+                  </p>
+                )}
               </div>
 
               {/* Telegram Contact CTA Button */}
@@ -187,15 +208,15 @@ export default function ShopCatalogPage() {
                 href={buildTelegramDirectUrl(shop.telegram_username)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 text-sky-400 font-medium text-xs sm:text-sm shadow-sm transition-all hover:scale-105"
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-sky-500/15 hover:bg-sky-500/25 border border-sky-500/30 text-sky-400 font-semibold text-xs sm:text-sm shadow-sm transition-all hover:scale-105"
               >
-                <Send className="w-4 h-4 fill-sky-400" />
+                <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-sky-400" />
                 <span>@{shop.telegram_username} bilan bog'lanish</span>
               </a>
             </div>
 
             {/* Search & Product Counter */}
-            <div className="space-y-3 pt-2">
+            <div className="space-y-2.5 sm:space-y-3 pt-2">
               <div className="relative">
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
@@ -203,7 +224,7 @@ export default function ShopCatalogPage() {
                   placeholder="Katalogdan qidirish..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-sm text-white placeholder-slate-500 focus:border-emerald-500 outline-none transition-all shadow-inner"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-slate-900 border border-slate-800 text-xs sm:text-sm text-white placeholder-slate-500 focus:border-emerald-500 outline-none transition-all shadow-inner"
                 />
               </div>
 
@@ -214,7 +235,7 @@ export default function ShopCatalogPage() {
                 {searchQuery && (
                   <button
                     onClick={() => setSearchQuery('')}
-                    className="text-emerald-400 hover:underline"
+                    className="text-emerald-400 hover:underline text-xs"
                   >
                     Filtrni tozalash
                   </button>
@@ -224,11 +245,11 @@ export default function ShopCatalogPage() {
 
             {/* Product Grid */}
             {filteredProducts.length === 0 ? (
-              <div className="py-16 text-center bg-slate-900/40 rounded-3xl border border-slate-800/80 space-y-3">
-                <div className="w-14 h-14 rounded-2xl bg-slate-800 text-slate-500 flex items-center justify-center mx-auto">
-                  <Package className="w-7 h-7" />
+              <div className="py-12 sm:py-16 text-center bg-slate-900/40 rounded-3xl border border-slate-800/80 space-y-3">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-800 text-slate-500 flex items-center justify-center mx-auto">
+                  <Package className="w-6 h-6 sm:w-7 sm:h-7" />
                 </div>
-                <h3 className="text-base font-bold text-white">Mahsulot topilmadi</h3>
+                <h3 className="text-sm sm:text-base font-bold text-white">Mahsulot topilmadi</h3>
                 <p className="text-xs text-slate-400 max-w-xs mx-auto">
                   {searchQuery 
                     ? `"${searchQuery}" bo'yicha hech qanday mahsulot topilmadi.`
@@ -236,7 +257,7 @@ export default function ShopCatalogPage() {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-1">
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product.id}
@@ -251,20 +272,18 @@ export default function ShopCatalogPage() {
         ) : null}
       </main>
 
-      {/* Product Detail Modal */}
-      {shop && (
-        <ProductDetailModal
-          product={selectedProduct}
-          telegramUsername={shop.telegram_username}
-          onClose={() => setSelectedProduct(null)}
-        />
-      )}
+      {/* Product Detail Modal for Quick View */}
+      <ProductDetailModal
+        product={selectedProduct}
+        telegramUsername={shop?.telegram_username || ''}
+        onClose={() => setSelectedProduct(null)}
+      />
 
-      {/* Mini Brand Footer */}
-      <footer className="mt-auto py-6 text-center border-t border-slate-900 bg-slate-950/90 text-[11px] text-slate-500">
-        <Link href="/" className="hover:text-emerald-400 transition-colors inline-flex items-center gap-1">
+      {/* Footer Branding */}
+      <footer className="border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+        <Link href="/" className="hover:text-slate-400 transition-colors inline-flex items-center gap-1">
           <span>Powered by</span>
-          <span className="font-bold text-slate-400">Insta.Link</span>
+          <span className="font-semibold text-emerald-400">Insta.Link</span>
         </Link>
       </footer>
     </div>

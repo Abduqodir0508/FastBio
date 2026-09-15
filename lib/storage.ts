@@ -2,30 +2,26 @@ import { supabase, isSupabaseConfigured } from './supabase';
 import { Shop, Product, CreateShopInput, CreateProductInput, UpdateProductInput } from './types';
 import { cleanTelegramUsername } from './utils';
 
-// Initial fallback mock data for testing & offline mode
+// Universal single mock demo shop
+export const DEMO_SHOP_SLUG = 'demo_shop';
+
 const INITIAL_MOCK_SHOPS: Shop[] = [
   {
-    id: 'a1b2c3d4-e5f6-7890-abcd-111111111111',
-    name: 'Terra Pro Official',
-    slug: 'terra_pro',
-    telegram_username: 'terrapro_support',
+    id: 'demo-shop-universal-id-001',
+    name: "Sizning Do'koningiz",
+    slug: DEMO_SHOP_SLUG,
+    telegram_username: 'demo_admin',
     admin_pin: '1234',
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: 'a1b2c3d4-e5f6-7890-abcd-222222222222',
-    name: 'Apple Zone Tashkent',
-    slug: 'apple_zone',
-    telegram_username: 'applezone_tashkent',
-    admin_pin: '7777',
+    description: "Namuna do'kon — tizim qanday ishlashini ko'rishingiz uchun.",
+    is_demo: true,
     created_at: new Date().toISOString(),
   },
 ];
 
 const INITIAL_MOCK_PRODUCTS: Product[] = [
   {
-    id: 'p1',
-    shop_id: 'a1b2c3d4-e5f6-7890-abcd-111111111111',
+    id: 'demo-p1',
+    shop_id: 'demo-shop-universal-id-001',
     title: "Klassik Erkaklar Ko'ylagi",
     price: 240000,
     image_url: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80',
@@ -33,63 +29,47 @@ const INITIAL_MOCK_PRODUCTS: Product[] = [
     created_at: new Date(Date.now() - 3600000 * 4).toISOString(),
   },
   {
-    id: 'p2',
-    shop_id: 'a1b2c3d4-e5f6-7890-abcd-111111111111',
-    title: 'Premium Qora Jinsi Shim',
-    price: 320000,
-    image_url: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800&auto=format&fit=crop&q=80',
-    description: "Qulay va elastik yuqori sifatli qora jinsi shim. Yuvilganda rangi o'chmaydi.",
+    id: 'demo-p2',
+    shop_id: 'demo-shop-universal-id-001',
+    title: 'Simsiz Shovqinsiz Quloqchin',
+    price: 450000,
+    image_url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
+    description: "Yuqori sifatli bass va qulay shovqinni bekor qiluvchi quloqchin. 30 soatgacha batareya quvvati.",
     created_at: new Date(Date.now() - 3600000 * 3).toISOString(),
   },
   {
-    id: 'p3',
-    shop_id: 'a1b2c3d4-e5f6-7890-abcd-111111111111',
-    title: 'Qishki Bomber Kurtka',
-    price: 680000,
-    image_url: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80',
-    description: "Suv va shamol o'tkazmaydigan issiq kurtka. Ichki qismi yumshoq jun bilan qoplangan.",
+    id: 'demo-p3',
+    shop_id: 'demo-shop-universal-id-001',
+    title: 'Smart Smart-Soat Active Fit',
+    price: 580000,
+    image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
+    description: "Yurak urishi, qadamlar va sport rejimlarini o'lchovchi zamonaviy suvga chidamli aqlli soat.",
     created_at: new Date(Date.now() - 3600000 * 2).toISOString(),
   },
   {
-    id: 'p4',
-    shop_id: 'a1b2c3d4-e5f6-7890-abcd-111111111111',
-    title: 'Charm Erkaklar Kamari',
-    price: 110000,
-    image_url: 'https://images.unsplash.com/photo-1624222247344-550fb60583dc?w=800&q=80',
-    description: 'Tabiiy charmdan ishlangan klassik qora kamar.',
+    id: 'demo-p4',
+    shop_id: 'demo-shop-universal-id-001',
+    title: 'Klassik Charm Hamyon',
+    price: 180000,
+    image_url: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80',
+    description: 'Haqiqiy charmdan ishlangan ixcham va ko‘p bo‘lmali hamyon. Kundalik foydalanish uchun juda qulay.',
     created_at: new Date(Date.now() - 3600000 * 1).toISOString(),
   },
-  {
-    id: 'p5',
-    shop_id: 'a1b2c3d4-e5f6-7890-abcd-222222222222',
-    title: 'iPhone 16 Pro Max 256GB Desert Titanium',
-    price: 17200000,
-    image_url: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&q=80',
-    description: 'Yangi original Apple iPhone 16 Pro Max. 1 yil rasmiy kafolat bilan.',
-    created_at: new Date(Date.now() - 3600000 * 5).toISOString(),
-  },
-  {
-    id: 'p6',
-    shop_id: 'a1b2c3d4-e5f6-7890-abcd-222222222222',
-    title: 'AirPods Pro 2 USB-C',
-    price: 3100000,
-    image_url: 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=800&q=80',
-    description: 'Faol shovqinni bekor qilish (ANC) tizimiga ega yangi AirPods Pro 2.',
-    created_at: new Date(Date.now() - 3600000 * 4).toISOString(),
-  },
-  {
-    id: 'p7',
-    shop_id: 'a1b2c3d4-e5f6-7890-abcd-222222222222',
-    title: 'Apple Watch Series 10 46mm',
-    price: 5800000,
-    image_url: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&q=80',
-    description: "Eng yupqa va yorqin displeyli yangi avlod aqlli soat.",
-    created_at: new Date(Date.now() - 3600000 * 3).toISOString(),
-  }
 ];
 
-const LOCAL_STORAGE_SHOPS_KEY = 'instal_shops_data';
-const LOCAL_STORAGE_PRODUCTS_KEY = 'instal_products_data';
+const LOCAL_STORAGE_SHOPS_KEY = 'instal_shops_data_v2';
+const LOCAL_STORAGE_PRODUCTS_KEY = 'instal_products_data_v2';
+
+export function isDemoShop(shopIdOrSlug?: string | null): boolean {
+  if (!shopIdOrSlug) return false;
+  const val = shopIdOrSlug.toLowerCase().trim();
+  return (
+    val === DEMO_SHOP_SLUG ||
+    val === 'demo-shop-universal-id-001' ||
+    val === 'terra_pro' ||
+    val === 'apple_zone'
+  );
+}
 
 function getLocalShops(): Shop[] {
   if (typeof window === 'undefined') return INITIAL_MOCK_SHOPS;
@@ -99,7 +79,26 @@ function getLocalShops(): Shop[] {
       localStorage.setItem(LOCAL_STORAGE_SHOPS_KEY, JSON.stringify(INITIAL_MOCK_SHOPS));
       return INITIAL_MOCK_SHOPS;
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    // Ensure demo shop always exists and is marked as demo
+    const hasDemo = parsed.some((s: Shop) => isDemoShop(s.slug) || isDemoShop(s.id));
+    if (!hasDemo) {
+      const merged = [...INITIAL_MOCK_SHOPS, ...parsed];
+      localStorage.setItem(LOCAL_STORAGE_SHOPS_KEY, JSON.stringify(merged));
+      return merged;
+    }
+    return parsed.map((s: Shop) => {
+      if (isDemoShop(s.slug) || isDemoShop(s.id)) {
+        return {
+          ...s,
+          name: "Sizning Do'koningiz",
+          slug: DEMO_SHOP_SLUG,
+          description: "Namuna do'kon — tizim qanday ishlashini ko'rishingiz uchun.",
+          is_demo: true,
+        };
+      }
+      return s;
+    });
   } catch {
     return INITIAL_MOCK_SHOPS;
   }
@@ -118,7 +117,14 @@ function getLocalProducts(): Product[] {
       localStorage.setItem(LOCAL_STORAGE_PRODUCTS_KEY, JSON.stringify(INITIAL_MOCK_PRODUCTS));
       return INITIAL_MOCK_PRODUCTS;
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    const hasDemoProds = parsed.some((p: Product) => isDemoShop(p.shop_id));
+    if (!hasDemoProds) {
+      const merged = [...INITIAL_MOCK_PRODUCTS, ...parsed];
+      localStorage.setItem(LOCAL_STORAGE_PRODUCTS_KEY, JSON.stringify(merged));
+      return merged;
+    }
+    return parsed;
   } catch {
     return INITIAL_MOCK_PRODUCTS;
   }
@@ -135,6 +141,11 @@ function saveLocalProducts(products: Product[]) {
 
 export async function getShopBySlug(slug: string): Promise<Shop | null> {
   const normalizedSlug = slug.toLowerCase().trim();
+
+  // If requesting legacy demo or new demo slug, return standardized demo shop
+  if (isDemoShop(normalizedSlug)) {
+    return INITIAL_MOCK_SHOPS[0];
+  }
 
   if (isSupabaseConfigured()) {
     try {
@@ -160,6 +171,10 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
 }
 
 export async function getProductsByShopId(shopId: string): Promise<Product[]> {
+  if (isDemoShop(shopId)) {
+    return INITIAL_MOCK_PRODUCTS;
+  }
+
   if (isSupabaseConfigured()) {
     try {
       const { data, error } = await supabase
@@ -187,6 +202,10 @@ export async function createShop(
 ): Promise<{ shop: Shop | null; error?: string }> {
   const cleanUsername = cleanTelegramUsername(input.telegram_username);
   const normalizedSlug = input.slug.toLowerCase().trim();
+
+  if (isDemoShop(normalizedSlug)) {
+    return { shop: null, error: "Ushbu do'kon manzili (slug) band. Iltimos, boshqa nom tanlang." };
+  }
 
   const shopPayload = {
     name: input.name.trim(),
@@ -234,6 +253,7 @@ export async function createShop(
   const newShop: Shop = {
     id: 'shop_' + Math.random().toString(36).substring(2, 9) + Date.now().toString(36),
     ...shopPayload,
+    is_demo: false,
     created_at: new Date().toISOString(),
   };
 
@@ -247,7 +267,7 @@ export async function createShop(
     title: 'Birinchi Mahsulotingiz',
     price: 150000,
     image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
-    description: "Bu sizning birinchi namunaviy mahsulotingiz. Admin paneldan tahrirlashingiz yoki yangilarini qo'shishingiz mumkin.",
+    description: "Bu sizning birinchi mahsulotingiz. Admin paneldan bemalol tahrirlashingiz yoki yangilarini qo'shishingiz mumkin.",
     created_at: new Date().toISOString(),
   };
   const products = getLocalProducts();
@@ -259,6 +279,13 @@ export async function createShop(
 export async function createProduct(
   input: CreateProductInput
 ): Promise<{ product: Product | null; error?: string }> {
+  if (isDemoShop(input.shop_id)) {
+    return {
+      product: null,
+      error: "Bu namuna do'kon. O'zgartirish kiritish uchun o'z do'koningizni oching!",
+    };
+  }
+
   const productPayload = {
     shop_id: input.shop_id,
     title: input.title.trim(),
@@ -303,6 +330,13 @@ export async function updateProduct(
   id: string,
   input: UpdateProductInput
 ): Promise<{ product: Product | null; error?: string }> {
+  if (id.startsWith('demo-') || isDemoShop(id)) {
+    return {
+      product: null,
+      error: "Bu namuna do'kon. O'zgartirish kiritish uchun o'z do'koningizni oching!",
+    };
+  }
+
   const updatePayload: any = {};
   if (input.title !== undefined) updatePayload.title = input.title.trim();
   if (input.price !== undefined) updatePayload.price = Number(input.price);
@@ -334,6 +368,13 @@ export async function updateProduct(
     return { product: null, error: 'Mahsulot topilmadi' };
   }
 
+  if (isDemoShop(products[index].shop_id)) {
+    return {
+      product: null,
+      error: "Bu namuna do'kon. O'zgartirish kiritish uchun o'z do'koningizni oching!",
+    };
+  }
+
   const updatedProduct = {
     ...products[index],
     ...updatePayload,
@@ -348,6 +389,13 @@ export async function updateProduct(
 export async function deleteProduct(
   id: string
 ): Promise<{ success: boolean; error?: string }> {
+  if (id.startsWith('demo-') || isDemoShop(id)) {
+    return {
+      success: false,
+      error: "Bu namuna do'kon. O'zgartirish kiritish uchun o'z do'koningizni oching!",
+    };
+  }
+
   if (isSupabaseConfigured()) {
     try {
       const { error } = await supabase.from('products').delete().eq('id', id);
@@ -362,6 +410,14 @@ export async function deleteProduct(
 
   // Local Storage Fallback
   const products = getLocalProducts();
+  const target = products.find((p) => p.id === id);
+  if (target && isDemoShop(target.shop_id)) {
+    return {
+      success: false,
+      error: "Bu namuna do'kon. O'zgartirish kiritish uchun o'z do'koningizni oching!",
+    };
+  }
+
   const filtered = products.filter((p) => p.id !== id);
   saveLocalProducts(filtered);
   return { success: true };

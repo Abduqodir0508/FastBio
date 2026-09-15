@@ -37,11 +37,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             onError={() => setImageError(true)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center bg-slate-950 text-slate-600 gap-2 p-4">
-            <ImageOff className="w-8 h-8 stroke-[1.5]" />
-            <span className="text-[11px]">Rasm mavjud emas</span>
+            <ImageOff className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.5]" />
+            <span className="text-[10px] sm:text-[11px]">Rasm mavjud emas</span>
           </div>
         )}
 
@@ -51,29 +52,29 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             e.stopPropagation();
             onSelectProduct?.(product);
           }}
-          className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md text-white/80 hover:text-white hover:bg-black/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/60 backdrop-blur-md text-white/80 hover:text-white hover:bg-black/90 flex items-center justify-center opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200"
           title="Batafsil ko'rish"
         >
-          <Eye className="w-4 h-4" />
+          <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
         </button>
 
         {/* Price Tag Overlay */}
-        <div className="absolute bottom-3 left-3 px-2.5 py-1 rounded-lg bg-slate-950/80 backdrop-blur-md border border-white/10 text-emerald-400 font-bold text-xs tracking-tight shadow-md">
+        <div className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg bg-slate-950/85 backdrop-blur-md border border-white/10 text-emerald-400 font-bold text-[11px] sm:text-xs tracking-tight shadow-md">
           {formatPrice(product.price)}
         </div>
       </div>
 
       {/* Card Body */}
-      <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+      <div className="p-3.5 sm:p-4 flex-1 flex flex-col justify-between space-y-2.5 sm:space-y-3">
         <div>
           <h3 
             onClick={() => onSelectProduct?.(product)}
-            className="font-bold text-white text-sm sm:text-base line-clamp-1 hover:text-emerald-400 cursor-pointer transition-colors"
+            className="font-bold text-white text-xs sm:text-base line-clamp-1 hover:text-emerald-400 cursor-pointer transition-colors"
           >
             {product.title}
           </h3>
           {product.description && (
-            <p className="text-xs text-slate-400 line-clamp-2 mt-1.5 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-slate-400 line-clamp-2 mt-1 sm:mt-1.5 leading-relaxed">
               {product.description}
             </p>
           )}
@@ -84,9 +85,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           href={telegramOrderUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-telegram hover:from-sky-400 hover:to-sky-500 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md shadow-sky-500/20 hover:shadow-sky-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
+          className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-telegram hover:from-sky-400 hover:to-sky-500 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-md shadow-sky-500/20 hover:shadow-sky-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
         >
-          <Send className="w-3.5 h-3.5 fill-white" />
+          <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-white" />
           <span>Buyurtma berish</span>
         </a>
       </div>

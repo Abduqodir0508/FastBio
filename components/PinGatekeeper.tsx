@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Lock, KeyRound, ArrowRight, Store, AlertCircle, Eye, EyeOff, ShieldAlert } from 'lucide-react';
+import { Lock, KeyRound, ArrowRight, Store, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { Shop } from '@/lib/types';
 
 interface PinGatekeeperProps {
@@ -52,36 +52,36 @@ export const PinGatekeeper: React.FC<PinGatekeeperProps> = ({ shop, onAuthentica
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-3.5 sm:p-4 relative overflow-hidden">
       {/* Background Ambience */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-500/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="bg-glow-orb absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 sm:w-96 h-72 sm:h-96 bg-amber-500/10 blur-[100px] sm:blur-[120px] rounded-full" />
 
-      <div className={`w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl relative z-10 transition-transform ${shake ? 'animate-shake' : ''}`}>
+      <div className={`w-full max-w-md bg-slate-900/90 border border-slate-800 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-xl relative z-10 transition-transform ${shake ? 'animate-shake' : ''}`}>
         
         {/* Lock Icon Badge */}
-        <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center mx-auto mb-5 shadow-lg shadow-amber-500/10">
-          <Lock className="w-8 h-8 stroke-[2.2]" />
+        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center mx-auto mb-4 sm:mb-5 shadow-lg shadow-amber-500/10">
+          <Lock className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.2]" />
         </div>
 
         {/* Header */}
-        <div className="text-center space-y-1.5 mb-6">
-          <h2 className="text-2xl font-bold tracking-tight text-white">
+        <div className="text-center space-y-1 sm:space-y-1.5 mb-5 sm:mb-6">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
             Admin Kirish
           </h2>
-          <p className="text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-400">
             <span className="text-white font-medium">{shop.name}</span> boshqaruv paneliga kirish uchun PIN kodni kiriting.
           </p>
         </div>
 
         {error && (
-          <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
+          <div className="mb-4 sm:mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
         {/* PIN Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
           <div className="relative">
             <div className="relative flex items-center">
               <input
@@ -93,7 +93,7 @@ export const PinGatekeeper: React.FC<PinGatekeeperProps> = ({ shop, onAuthentica
                   setError(null);
                   setPin(e.target.value);
                 }}
-                className="w-full pl-4 pr-12 py-3.5 rounded-2xl bg-slate-950 border border-slate-700 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-center font-mono text-xl tracking-[0.3em] text-white placeholder-slate-600 outline-none transition-all"
+                className="w-full pl-4 pr-12 py-3 sm:py-3.5 rounded-2xl bg-slate-950 border border-slate-700 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 text-center font-mono text-lg sm:text-xl tracking-[0.3em] text-white placeholder-slate-600 outline-none transition-all shadow-inner"
               />
               <button
                 type="button"
@@ -119,7 +119,7 @@ export const PinGatekeeper: React.FC<PinGatekeeperProps> = ({ shop, onAuthentica
                     handleKeypadPress(btn);
                   }
                 }}
-                className={`h-12 rounded-xl text-base font-semibold transition-all ${
+                className={`h-11 sm:h-12 rounded-xl text-sm sm:text-base font-semibold transition-all ${
                   btn === 'DEL' || btn === 'C'
                     ? 'bg-slate-800/60 hover:bg-slate-800 text-slate-400 hover:text-white text-xs'
                     : 'bg-slate-800/80 hover:bg-slate-700 text-white active:scale-95 shadow-sm'
@@ -133,7 +133,7 @@ export const PinGatekeeper: React.FC<PinGatekeeperProps> = ({ shop, onAuthentica
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-3.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-sm shadow-lg shadow-amber-400/20 flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] transition-all"
+            className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-amber-400/20 flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] transition-all"
           >
             <KeyRound className="w-4 h-4" />
             <span>Panelga kirish</span>
@@ -141,7 +141,7 @@ export const PinGatekeeper: React.FC<PinGatekeeperProps> = ({ shop, onAuthentica
         </form>
 
         {/* Back Link */}
-        <div className="mt-6 pt-5 border-t border-slate-800 text-center">
+        <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-slate-800 text-center">
           <Link
             href={`/${shop.slug}`}
             className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-slate-200 transition-colors"

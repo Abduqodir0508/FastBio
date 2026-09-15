@@ -4,6 +4,8 @@ export interface Shop {
   slug: string;
   telegram_username: string;
   admin_pin: string;
+  description?: string;
+  is_demo?: boolean;
   created_at?: string;
 }
 
