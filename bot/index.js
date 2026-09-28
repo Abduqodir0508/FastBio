@@ -6,7 +6,7 @@ const bot = new Telegraf(BOT_TOKEN);
 // Start bosilganda chiqadigan xabar
 bot.start((ctx) => {
   return ctx.reply(
-    "Assalomu alaykum! FastBio Pro botiga xush kelibsiz.\nIltimos, tilingizni tanlang / Выберите язык:",
+    "Assalomu alaykum! InstaLink Pro botiga xush kelibsiz.\nIltimos, tilingizni tanlang / Выберите язык:",
     Markup.inlineKeyboard([
       [Markup.button.callback("🇺🇿 O'zbekcha", "lang_uz")],
       [Markup.button.callback("🇷🇺 Русский", "lang_ru")],
@@ -18,7 +18,7 @@ bot.start((ctx) => {
 // Til tanlanganda
 bot.action('lang_uz', (ctx) => {
   ctx.reply(
-    "⚡ FastBio PRO tarifi (150 000 so'm)\n\n" +
+    "⚡ InstaLink PRO tarifi (150 000 so'm)\n\n" +
     "• 500 tagacha mahsulot va rasm\n" +
     "• Cheksiz mijozlar va buyurtmalar\n" +
     "• Do'konga oltin ⭐ PRO nishoni\n\n" +
@@ -31,7 +31,7 @@ bot.action('lang_uz', (ctx) => {
 
 bot.action('lang_ru', (ctx) => {
   ctx.reply(
-    "⚡ Тариф FastBio PRO (150 000 сум)\n\n" +
+    "⚡ Тариф InstaLink PRO (150 000 сум)\n\n" +
     "• До 500 товаров и фото\n" +
     "• Безлимитные заказы\n" +
     "• Значок ⭐ PRO\n\n" +
@@ -42,7 +42,7 @@ bot.action('lang_ru', (ctx) => {
 
 bot.action('lang_en', (ctx) => {
   ctx.reply(
-    "⚡ FastBio PRO Plan (150,000 UZS)\n\n" +
+    "⚡ InstaLink PRO Plan (150,000 UZS)\n\n" +
     "• Up to 500 products\n" +
     "• Unlimited orders\n" +
     "• Exclusive ⭐ PRO badge\n\n" +
@@ -50,7 +50,7 @@ bot.action('lang_en', (ctx) => {
   );
 });
 
-bot.launch().then(() => console.log("🤖 FastBio Bot ishga tushdi!"));
+bot.launch().then(() => console.log("🤖 InstaLink Bot ishga tushdi!"));
 
 // Xatoliklarni ushlash
 process.once('SIGINT', () => bot.stop('SIGINT'));

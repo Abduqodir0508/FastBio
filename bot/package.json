@@ -1,7 +1,7 @@
 {
-  "name": "fastbio-telegram-bot",
+  "name": "instalink-telegram-bot",
   "version": "1.0.0",
-  "description": "FastBio PRO Activation and Receipt Confirmation Telegram Bot",
+  "description": "InstaLink PRO Activation and Receipt Confirmation Telegram Bot",
   "main": "index.js",
   "type": "module",
   "scripts": {

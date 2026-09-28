@@ -8,7 +8,7 @@ const bot = new Telegraf(BOT_TOKEN);
 const PORT = process.env.PORT || 3000;
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-  res.end('FastBio PRO Bot is running 24/7 on Render!');
+  res.end('InstaLink PRO Bot is running 24/7 on Render!');
 });
 
 server.listen(PORT, () => {
@@ -18,7 +18,7 @@ server.listen(PORT, () => {
 // Start bosilganda chiqadigan xabar
 bot.start((ctx) => {
   return ctx.reply(
-    "Assalomu alaykum! FastBio Pro botiga xush kelibsiz.\nIltimos, tilingizni tanlang / Выберите язык / Choose language:",
+    "Assalomu alaykum! InstaLink Pro botiga xush kelibsiz.\nIltimos, tilingizni tanlang / Выберите язык / Choose language:",
     Markup.inlineKeyboard([
       [Markup.button.callback("🇺🇿 O'zbekcha", "lang_uz")],
       [Markup.button.callback("🇷🇺 Русский", "lang_ru")],
@@ -31,7 +31,7 @@ bot.start((ctx) => {
 bot.action('lang_uz', (ctx) => {
   ctx.answerCbQuery();
   ctx.reply(
-    "⚡ FastBio PRO tarifi (150 000 so'm)\n\n" +
+    "⚡ InstaLink PRO tarifi (150 000 so'm)\n\n" +
     "• 500 tagacha mahsulot va rasm\n" +
     "• Cheksiz mijozlar va buyurtmalar\n" +
     "• Do'konga oltin ⭐ PRO nishoni\n\n" +
@@ -46,7 +46,7 @@ bot.action('lang_uz', (ctx) => {
 bot.action('lang_ru', (ctx) => {
   ctx.answerCbQuery();
   ctx.reply(
-    "⚡ Тариф FastBio PRO (150 000 сум)\n\n" +
+    "⚡ Тариф InstaLink PRO (150 000 сум)\n\n" +
     "• До 500 товаров и фото\n" +
     "• Безлимитные клиенты и заказы\n" +
     "• Золотой значок ⭐ PRO для магазина\n\n" +
@@ -61,7 +61,7 @@ bot.action('lang_ru', (ctx) => {
 bot.action('lang_en', (ctx) => {
   ctx.answerCbQuery();
   ctx.reply(
-    "⚡ FastBio PRO Plan (150,000 UZS)\n\n" +
+    "⚡ InstaLink PRO Plan (150,000 UZS)\n\n" +
     "• Up to 500 products and images\n" +
     "• Unlimited customers and orders\n" +
     "• Exclusive ⭐ PRO badge for your store\n\n" +
@@ -75,7 +75,7 @@ bot.action('lang_en', (ctx) => {
 // Polling orqali ishga tushirish
 bot.launch()
   .then(() => {
-    console.log("🤖 FastBio PRO Bot muvaffaqiyatli ishga tushdi!");
+    console.log("🤖 InstaLink PRO Bot muvaffaqiyatli ishga tushdi!");
   })
   .catch((err) => {
     console.error("Botni ishga tushirishda xatolik:", err);

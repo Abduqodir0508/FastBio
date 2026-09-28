@@ -10,7 +10,7 @@ const INITIAL_MOCK_SHOPS: Shop[] = [
     id: 'demo-shop-universal-id-001',
     name: "Sizning Do'koningiz",
     slug: DEMO_SHOP_SLUG,
-    telegram_username: 'fastbio_demo',
+    telegram_username: 'instalink_demo',
     admin_pin: '1234',
     description: "Namuna do'kon — tizim qanday ishlashini ko'rishingiz uchun.",
     is_demo: true,
@@ -57,8 +57,8 @@ const INITIAL_MOCK_PRODUCTS: Product[] = [
   },
 ];
 
-const LOCAL_STORAGE_SHOPS_KEY = 'fastbio_shops_data_v1';
-const LOCAL_STORAGE_PRODUCTS_KEY = 'fastbio_products_data_v1';
+const LOCAL_STORAGE_SHOPS_KEY = 'instalink_shops_data_v1';
+const LOCAL_STORAGE_PRODUCTS_KEY = 'instalink_products_data_v1';
 
 export function isDemoShop(shopIdOrSlug?: string | null): boolean {
   if (!shopIdOrSlug) return false;
@@ -74,7 +74,7 @@ export function isDemoShop(shopIdOrSlug?: string | null): boolean {
 function getLocalShops(): Shop[] {
   if (typeof window === 'undefined') return INITIAL_MOCK_SHOPS;
   try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_SHOPS_KEY);
+    const raw = localStorage.getItem(LOCAL_STORAGE_SHOPS_KEY) || localStorage.getItem('instalink_shops_data_v1');
     if (!raw) {
       localStorage.setItem(LOCAL_STORAGE_SHOPS_KEY, JSON.stringify(INITIAL_MOCK_SHOPS));
       return INITIAL_MOCK_SHOPS;
@@ -93,7 +93,7 @@ function getLocalShops(): Shop[] {
           ...s,
           name: "Sizning Do'koningiz",
           slug: DEMO_SHOP_SLUG,
-          telegram_username: 'fastbio_demo',
+          telegram_username: 'instalink_demo',
           description: "Namuna do'kon — tizim qanday ishlashini ko'rishingiz uchun.",
           is_demo: true,
         };

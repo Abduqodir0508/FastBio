@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const { slug, is_pro = true, custom_limit, secret_key } = body;
 
     // Optional simple security check
-    const BOT_SECRET = process.env.BOT_SECRET_KEY || 'fastbio_pro_bot_secret_2026';
+    const BOT_SECRET = process.env.BOT_SECRET_KEY || 'instalink_pro_bot_secret_2026';
     if (secret_key && secret_key !== BOT_SECRET) {
       return NextResponse.json({ error: 'Ruxsat berilmadi' }, { status: 403 });
     }

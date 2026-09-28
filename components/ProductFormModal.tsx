@@ -95,13 +95,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div 
-        className="relative w-full max-w-lg bg-slate-900 border border-slate-700/80 rounded-3xl p-5 sm:p-8 shadow-2xl text-white my-auto animate-scale-in max-h-[92vh] overflow-y-auto"
+        className="relative w-full max-w-lg bg-[#121826] border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl text-white my-auto animate-scale-in max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -110,7 +110,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
           <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
             <span>{isEditing ? "Mahsulotni tahrirlash" : "Yangi mahsulot qo'shish"}</span>
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400">
+          <p className="text-xs sm:text-sm text-zinc-400">
             {isEditing 
               ? "Mahsulot ma'lumotlarini o'zgartiring va saqlang."
               : "Do'koningiz katalogiga yangi mahsulot qo'shing."}
@@ -127,8 +127,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
           {/* Title */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
-              <Type className="w-3.5 h-3.5 text-emerald-400" />
+            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center gap-1.5">
+              <Type className="w-3.5 h-3.5 text-indigo-400" />
               <span>Mahsulot nomi *</span>
             </label>
             <input
@@ -137,19 +137,19 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               placeholder="Masalan: Klassik Erkaklar Ko'ylagi"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-xs sm:text-sm text-white placeholder-slate-500 outline-none transition-all shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
             />
           </div>
 
           {/* Price */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center justify-between">
+            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+                <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
                 <span>Narxi (UZS) *</span>
               </span>
               {price && !isNaN(parseFloat(price)) && (
-                <span className="text-[11px] sm:text-xs font-bold text-emerald-400">
+                <span className="text-[11px] sm:text-xs font-bold text-indigo-400">
                   {formatPrice(parseFloat(price))}
                 </span>
               )}
@@ -162,13 +162,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               placeholder="Masalan: 240000"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-xs sm:text-sm text-white placeholder-slate-500 outline-none transition-all shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
             />
           </div>
 
           {/* Image URL & Quick Presets */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
+            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center gap-1.5">
               <ImageIcon className="w-3.5 h-3.5 text-sky-400" />
               <span>Rasm URL havolasi</span>
             </label>
@@ -180,12 +180,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 setImageUrl(e.target.value);
                 setImageError(false);
               }}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-xs sm:text-sm text-white placeholder-slate-500 outline-none transition-all shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
             />
 
             {/* Presets List */}
             <div className="mt-2 flex flex-wrap items-center gap-1.5">
-              <span className="text-[10px] text-slate-400 mr-1">Namunalar:</span>
+              <span className="text-[10px] text-zinc-400 mr-1">Namunalar:</span>
               {PRESET_IMAGES.map((preset) => (
                 <button
                   key={preset.label}
@@ -196,8 +196,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   }}
                   className={`text-[10px] sm:text-[11px] px-2 py-0.5 rounded-md border transition-colors ${
                     imageUrl === preset.url
-                      ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+                      ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300'
+                      : 'bg-white/[0.04] border-white/10 text-zinc-400 hover:text-white'
                   }`}
                 >
                   {preset.label}
@@ -207,7 +207,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
             {/* Live Image Preview */}
             {imageUrl && (
-              <div className="mt-2.5 relative w-full h-28 sm:h-32 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+              <div className="mt-2.5 relative w-full h-28 sm:h-32 rounded-xl bg-[#090D16] border border-white/[0.08] overflow-hidden flex items-center justify-center">
                 {!imageError ? (
                   <img
                     src={imageUrl}
@@ -229,8 +229,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1.5">
-              <AlignLeft className="w-3.5 h-3.5 text-slate-400" />
+            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center gap-1.5">
+              <AlignLeft className="w-3.5 h-3.5 text-zinc-400" />
               <span>Tavsif (ixtiyoriy)</span>
             </label>
             <textarea
@@ -238,7 +238,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               placeholder="Mahsulot haqida qisqacha ma'lumot, o'lchamlar, ranglar..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-slate-950/80 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-xs sm:text-sm text-white placeholder-slate-500 outline-none transition-all resize-none shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all resize-none shadow-inner"
             />
           </div>
 
@@ -247,14 +247,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-xs sm:text-sm text-slate-300 transition-colors"
+              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] font-semibold text-xs sm:text-sm text-zinc-300 transition-colors border border-white/[0.08]"
             >
               Bekor qilish
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-60 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-400 hover:via-purple-400 hover:to-pink-400 disabled:opacity-60 text-white font-bold text-xs sm:text-sm shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
             >
               {loading ? (
                 <>

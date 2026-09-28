@@ -1,11 +1,11 @@
 /**
- * FastBio Multi-language localization dictionary (UZ, RU, EN)
+ * InstaLink Multi-language localization dictionary (UZ, RU, EN)
  */
 
 module.exports = {
   uz: {
     language_name: "🇺🇿 O'zbekcha",
-    welcome: (name) => `👋 Assalomu alaykum, <b>${name}</b>!\n\n<b>FastBio PRO</b> faollashtirish botiga xush kelibsiz.`,
+    welcome: (name) => `👋 Assalomu alaykum, <b>${name}</b>!\n\n<b>InstaLink PRO</b> faollashtirish botiga xush kelibsiz.`,
     choose_language: "🌐 Iltimos, muloqot tilini tanlang:\nПожалуйста, выберите язык:\nPlease select your language:",
     lang_set: "✅ Til muvaffaqiyatli tanlandi!",
     
@@ -15,7 +15,7 @@ module.exports = {
     btn_contact_admin: "📞 Admin bilan bog'lanish",
     btn_change_lang: "🌐 Tilni o'zgartirish",
     
-    pricing_text: `💎 <b>FastBio PRO tarifi:</b>\n` +
+    pricing_text: `💎 <b>InstaLink PRO tarifi:</b>\n` +
       `• 500 tagacha mahsulot va rasm qo'shish\n` +
       `• Cheksiz mijozlar va buyurtmalar\n` +
       `• Do'konga 'PRO' nishoni (Badge)\n\n` +
@@ -24,8 +24,8 @@ module.exports = {
       `To'lovni amalga oshirgach, chekni (skrinshot yoki PDF) va do'koningiz nomini (havolasini) shu yerga yuboring.\n` +
       `Aloqa / Yordam: @A_Husanboyev`,
 
-    ask_shop_slug: "✍️ PRO faollashtirmoqchi bo'lgan <b>do'koningiz manzilini (slug)</b> kiriting:\n\n<i>Masalan: my_brand (fastbio.uz/my_brand)</i>",
-    shop_detected: (slug) => `🏪 Tanlangan do'kon: <b>${slug}</b>\n(Havola: fastbio.uz/${slug})`,
+    ask_shop_slug: "✍️ PRO faollashtirmoqchi bo'lgan <b>do'koningiz manzilini (slug)</b> kiriting:\n\n<i>Masalan: my_brand (myinstalink.vercel.app/my_brand)</i>",
+    shop_detected: (slug) => `🏪 Tanlangan do'kon: <b>${slug}</b>\n(Havola: myinstalink.vercel.app/${slug})`,
     
     ask_receipt: `📸 Iltimos, to'lov amalga oshirilgan <b>to'lov cheki (skrinshot yoki PDF)</b>ni botga yuboring.`,
     
@@ -51,7 +51,7 @@ module.exports = {
 
     user_approved_msg: (slug) => 
       `🎉 <b>TABRIKLAYMIZ!</b>\n\n` +
-      `Sizning <b>fastbio.uz/${slug}</b> do'koningiz uchun <b>PRO tarif</b> muvaffaqiyatli faollashtirildi! 🚀\n\n` +
+      `Sizning <b>myinstalink.vercel.app/${slug}</b> do'koningiz uchun <b>PRO tarif</b> muvaffaqiyatli faollashtirildi! 🚀\n\n` +
       `Endi siz 500 tagacha mahsulot qo'shishingiz va barcha PRO imkoniyatlaridan foydalanishingiz mumkin!`,
 
     user_rejected_msg: (slug, reason) => 
@@ -61,7 +61,7 @@ module.exports = {
 
   ru: {
     language_name: "🇷🇺 Русский",
-    welcome: (name) => `👋 Здравствуйте, <b>${name}</b>!\n\nДобро пожаловать в бот активации <b>FastBio PRO</b>.`,
+    welcome: (name) => `👋 Здравствуйте, <b>${name}</b>!\n\nДобро пожаловать в бот активации <b>InstaLink PRO</b>.`,
     choose_language: "🌐 Выберите язык / Tilni tanlang / Select language:",
     lang_set: "✅ Язык успешно выбран!",
     
@@ -71,7 +71,7 @@ module.exports = {
     btn_contact_admin: "📞 Связаться с админом",
     btn_change_lang: "🌐 Сменить язык",
     
-    pricing_text: `💎 <b>Тариф FastBio PRO:</b>\n` +
+    pricing_text: `💎 <b>Тариф InstaLink PRO:</b>\n` +
       `• До 500 товаров и фотографий\n` +
       `• Неограниченное количество заказов\n` +
       `• Отметка 'PRO' для магазина\n\n` +
@@ -80,8 +80,8 @@ module.exports = {
       `После оплаты отправьте чек (скриншот или PDF) и название вашего магазина сюда.\n` +
       `Поддержка: @A_Husanboyev`,
 
-    ask_shop_slug: "✍️ Введите <b>адрес (slug) вашего магазина</b>:\n\n<i>Например: my_brand (fastbio.uz/my_brand)</i>",
-    shop_detected: (slug) => `🏪 Выбранный магазин: <b>${slug}</b>\n(Ссылка: fastbio.uz/${slug})`,
+    ask_shop_slug: "✍️ Введите <b>адрес (slug) вашего магазина</b>:\n\n<i>Например: my_brand (myinstalink.vercel.app/my_brand)</i>",
+    shop_detected: (slug) => `🏪 Выбранный магазин: <b>${slug}</b>\n(Ссылка: myinstalink.vercel.app/${slug})`,
     
     ask_receipt: `📸 Пожалуйста, отправьте <b>чек об оплате (скриншот или PDF)</b> в бот.`,
     
@@ -106,7 +106,7 @@ module.exports = {
 
     user_approved_msg: (slug) => 
       `🎉 <b>ПОЗДРАВЛЯЕМ!</b>\n\n` +
-      `Для вашего магазина <b>fastbio.uz/${slug}</b> успешно активирован <b>тариф PRO</b>! 🚀\n\n` +
+      `Для вашего магазина <b>myinstalink.vercel.app/${slug}</b> успешно активирован <b>тариф PRO</b>! 🚀\n\n` +
       `Теперь вы можете добавлять до 500 товаров и использовать все премиум функции!`,
 
     user_rejected_msg: (slug, reason) => 
@@ -116,7 +116,7 @@ module.exports = {
 
   en: {
     language_name: "🇬🇧 English",
-    welcome: (name) => `👋 Hello, <b>${name}</b>!\n\nWelcome to the <b>FastBio PRO</b> activation bot.`,
+    welcome: (name) => `👋 Hello, <b>${name}</b>!\n\nWelcome to the <b>InstaLink PRO</b> activation bot.`,
     choose_language: "🌐 Please select your language:",
     lang_set: "✅ Language set successfully!",
     
@@ -126,7 +126,7 @@ module.exports = {
     btn_contact_admin: "📞 Contact Support",
     btn_change_lang: "🌐 Change Language",
     
-    pricing_text: `💎 <b>FastBio PRO Plan:</b>\n` +
+    pricing_text: `💎 <b>InstaLink PRO Plan:</b>\n` +
       `• Up to 500 products and images\n` +
       `• Unlimited orders and customers\n` +
       `• Exclusive 'PRO' badge for your store\n\n` +
@@ -135,8 +135,8 @@ module.exports = {
       `After payment, please send the payment receipt and your shop name here.\n` +
       `Support: @A_Husanboyev`,
 
-    ask_shop_slug: "✍️ Please enter your <b>shop address (slug)</b>:\n\n<i>Example: my_brand (fastbio.uz/my_brand)</i>",
-    shop_detected: (slug) => `🏪 Selected Shop: <b>${slug}</b>\n(Link: fastbio.uz/${slug})`,
+    ask_shop_slug: "✍️ Please enter your <b>shop address (slug)</b>:\n\n<i>Example: my_brand (myinstalink.vercel.app/my_brand)</i>",
+    shop_detected: (slug) => `🏪 Selected Shop: <b>${slug}</b>\n(Link: myinstalink.vercel.app/${slug})`,
     
     ask_receipt: `📸 Please send your <b>payment receipt (screenshot or PDF)</b>.`,
     
@@ -161,7 +161,7 @@ module.exports = {
 
     user_approved_msg: (slug) => 
       `🎉 <b>CONGRATULATIONS!</b>\n\n` +
-      `<b>PRO Plan</b> has been successfully activated for <b>fastbio.uz/${slug}</b>! 🚀\n\n` +
+      `<b>PRO Plan</b> has been successfully activated for <b>myinstalink.vercel.app/${slug}</b>! 🚀\n\n` +
       `You can now upload up to 500 products!`,
 
     user_rejected_msg: (slug, reason) => 

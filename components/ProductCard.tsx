@@ -24,10 +24,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   );
 
   return (
-    <div className="group relative bg-slate-900/80 border border-slate-800/80 rounded-2xl overflow-hidden hover:border-emerald-500/40 transition-all duration-300 flex flex-col shadow-lg shadow-black/20 hover:shadow-emerald-950/20">
+    <div className="group relative bg-[#121826]/80 border border-white/[0.08] rounded-2xl overflow-hidden hover:border-indigo-500/40 transition-all duration-300 flex flex-col shadow-lg shadow-black/20 hover:shadow-indigo-950/25 backdrop-blur-md">
       {/* Product Image Container */}
       <div 
-        className="relative aspect-square w-full bg-slate-950 overflow-hidden cursor-pointer"
+        className="relative aspect-square w-full bg-[#090D16] overflow-hidden cursor-pointer"
         onClick={() => onSelectProduct?.(product)}
       >
         {!imageError && product.image_url ? (
@@ -40,7 +40,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             decoding="async"
           />
         ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center bg-slate-950 text-slate-600 gap-2 p-4">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-[#090D16] text-zinc-600 gap-2 p-4">
             <ImageOff className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.5]" />
             <span className="text-[10px] sm:text-[11px]">Rasm mavjud emas</span>
           </div>
@@ -59,7 +59,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </button>
 
         {/* Price Tag Overlay */}
-        <div className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg bg-slate-950/85 backdrop-blur-md border border-white/10 text-emerald-400 font-bold text-[11px] sm:text-xs tracking-tight shadow-md">
+        <div className="absolute bottom-2.5 left-2.5 sm:bottom-3 sm:left-3 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg bg-[#090D16]/90 backdrop-blur-md border border-white/10 text-indigo-300 font-bold text-[11px] sm:text-xs tracking-tight shadow-md">
           {formatPrice(product.price)}
         </div>
       </div>
@@ -69,12 +69,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <div>
           <h3 
             onClick={() => onSelectProduct?.(product)}
-            className="font-bold text-white text-xs sm:text-base line-clamp-1 hover:text-emerald-400 cursor-pointer transition-colors"
+            className="font-bold text-white text-xs sm:text-base line-clamp-1 hover:text-indigo-400 cursor-pointer transition-colors"
           >
             {product.title}
           </h3>
           {product.description && (
-            <p className="text-[11px] sm:text-xs text-slate-400 line-clamp-2 mt-1 sm:mt-1.5 leading-relaxed">
+            <p className="text-[11px] sm:text-xs text-zinc-400 line-clamp-2 mt-1 sm:mt-1.5 leading-relaxed">
               {product.description}
             </p>
           )}
@@ -85,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           href={telegramOrderUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-telegram hover:from-sky-400 hover:to-sky-500 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-md shadow-sky-500/20 hover:shadow-sky-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
+          className="w-full py-2 sm:py-2.5 px-3 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-semibold text-xs sm:text-sm flex items-center justify-center gap-1.5 sm:gap-2 shadow-md shadow-sky-500/20 hover:shadow-indigo-500/35 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
         >
           <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-white" />
           <span>Buyurtma berish</span>

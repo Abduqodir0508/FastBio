@@ -141,7 +141,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
 
   const fullPublicUrl = typeof window !== 'undefined' 
     ? `${window.location.origin}/${createdShop?.slug || slug}` 
-    : `fastbio.uz/${createdShop?.slug || slug}`;
+    : `myinstalink.vercel.app/${createdShop?.slug || slug}`;
 
   const handleCopyLink = () => {
     if (typeof window !== 'undefined') {
@@ -161,13 +161,13 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div 
-        className="relative w-full max-w-lg bg-slate-900 border border-slate-700/80 rounded-3xl p-5 sm:p-8 shadow-2xl text-white my-auto animate-scale-in max-h-[92vh] overflow-y-auto"
+        className="relative w-full max-w-lg bg-[#121826] border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl text-white my-auto animate-scale-in max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-full text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -175,36 +175,36 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
         {/* SUCCESS VIEW */}
         {createdShop ? (
           <div className="py-4 text-center space-y-6 animate-fade-in">
-            <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto border border-emerald-500/30">
-              <CheckCircle2 className="w-9 h-9" />
+            <div className="w-16 h-16 bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 text-indigo-400 rounded-2xl flex items-center justify-center mx-auto border border-indigo-500/30 shadow-lg shadow-indigo-500/10">
+              <CheckCircle2 className="w-9 h-9 text-indigo-400" />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-2xl font-bold tracking-tight text-white">
+              <h3 className="text-2xl font-black tracking-tight text-white">
                 Tabriklaymiz! Do'koningiz tayyor 🎉
               </h3>
-              <p className="text-sm text-slate-400 max-w-sm mx-auto">
+              <p className="text-sm text-zinc-400 max-w-sm mx-auto">
                 <span className="text-white font-medium">{createdShop.name}</span> do'koni muvaffaqiyatli ochildi. Quyidagi havolani Instagram va Telegram sahifangizga qo'ying.
               </p>
             </div>
 
             {/* Generated Link Display Box */}
-            <div className="p-4 rounded-2xl bg-slate-950/80 border border-emerald-500/30 text-left space-y-2">
-              <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider">
+            <div className="p-4 rounded-2xl bg-[#090d16] border border-indigo-500/30 text-left space-y-2">
+              <span className="text-[11px] font-semibold text-indigo-400 uppercase tracking-wider">
                 Sizning Do'kon Havolangiz:
               </span>
               <div className="flex items-center justify-between gap-2">
-                <div className="font-mono text-sm text-slate-200 truncate select-all">
+                <div className="font-mono text-sm text-zinc-200 truncate select-all">
                   {fullPublicUrl}
                 </div>
                 <button
                   onClick={handleCopyLink}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 transition-colors shrink-0"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.08] hover:bg-white/[0.12] text-xs font-medium text-zinc-200 transition-colors shrink-0"
                 >
                   {copied ? (
                     <>
-                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-emerald-400">Nusxalandi!</span>
+                      <Check className="w-3.5 h-3.5 text-indigo-400" />
+                      <span className="text-indigo-400">Nusxalandi!</span>
                     </>
                   ) : (
                     <>
@@ -217,12 +217,12 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
             </div>
 
             {/* Admin PIN Reminder */}
-            <div className="p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/50 text-xs text-slate-300 text-left flex items-start gap-2.5">
-              <Lock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div className="p-3.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs text-zinc-300 text-left flex items-start gap-2.5">
+              <Lock className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
               <div>
                 <span className="font-semibold text-white">Admin PIN kodingiz: </span>
-                <span className="font-mono font-bold text-amber-300 tracking-wider">{createdShop.admin_pin}</span>
-                <p className="text-[11px] text-slate-400 mt-0.5">Admin panelga kirish uchun ushbu PIN kodni unutmang.</p>
+                <span className="font-mono font-bold text-indigo-300 tracking-wider">{createdShop.admin_pin}</span>
+                <p className="text-[11px] text-zinc-400 mt-0.5">Admin panelga kirish uchun ushbu PIN kodni unutmang.</p>
               </div>
             </div>
 
@@ -233,13 +233,13 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                   onClose();
                   router.push(`/${createdShop.slug}`);
                 }}
-                className="w-full py-3 px-4 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-sm text-slate-200 transition-colors"
+                className="w-full py-3 px-4 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] font-semibold text-sm text-zinc-200 transition-colors border border-white/[0.08]"
               >
                 Mijoz ko'rinishi
               </button>
               <button
                 onClick={handleGoToAdmin}
-                className="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 font-semibold text-sm text-slate-950 shadow-lg shadow-emerald-500/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-400 hover:via-purple-400 hover:to-pink-400 font-bold text-sm text-white shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
               >
                 <span>Admin Panelga o'tish</span>
                 <ArrowRight className="w-4 h-4" />
@@ -250,14 +250,14 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
           /* CREATION FORM */
           <div>
             <div className="space-y-1 mb-6">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium mb-2">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-medium mb-2">
+                <Sparkles className="w-3.5 h-3.5 text-pink-400" />
                 <span>1 daqiqada do'kon yarating</span>
               </div>
-              <h2 className="text-2xl font-bold tracking-tight text-white">
+              <h2 className="text-2xl font-black tracking-tight text-white">
                 Yangi do'kon ochish
               </h2>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-zinc-400">
                 Instagram va Telegram orqali savdo qiluvchi Link-in-Bio katalogingizni ishga tushiring.
               </p>
             </div>
@@ -272,8 +272,8 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Store Name */}
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center gap-1.5">
-                  <Store className="w-3.5 h-3.5 text-emerald-400" />
+                <label className="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center gap-1.5">
+                  <Store className="w-3.5 h-3.5 text-indigo-400" />
                   <span>Do'kon nomi *</span>
                 </label>
                 <input
@@ -282,22 +282,22 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                   placeholder="Masalan: Modiy Kiyimlar"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm text-white placeholder-slate-500 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
                 />
               </div>
 
               {/* Store Slug / URL */}
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+                <label className="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Globe className="w-3.5 h-3.5 text-emerald-400" />
+                    <Globe className="w-3.5 h-3.5 text-indigo-400" />
                     <span>Do'kon manzili (Slug) *</span>
                   </span>
-                  <span className="text-[11px] text-slate-400">havola uchun</span>
+                  <span className="text-[11px] text-zinc-400">havola uchun</span>
                 </label>
                 <div className="relative flex items-center">
-                  <span className="absolute left-3.5 text-xs text-slate-500 font-mono select-none">
-                    fastbio.uz/
+                  <span className="absolute left-3.5 text-xs text-zinc-500 font-mono select-none">
+                    myinstalink.vercel.app/
                   </span>
                   <input
                     type="text"
@@ -305,25 +305,25 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                     placeholder="modiy_kiyimlar"
                     value={slug}
                     onChange={handleSlugChange}
-                    className="w-full pl-[95px] pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm font-mono text-emerald-400 placeholder-slate-600 outline-none transition-all"
+                    className="w-full pl-[170px] pr-4 py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-mono text-indigo-300 placeholder-zinc-600 outline-none transition-all shadow-inner"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-zinc-400 mt-1">
                   Mijozlar ushbu havola orqali sizning mahsulotlaringizni ko'rishadi.
                 </p>
               </div>
 
               {/* Telegram Username */}
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+                <label className="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
                     <Send className="w-3.5 h-3.5 text-sky-400" />
                     <span>Telegram Username *</span>
                   </span>
-                  <span className="text-[11px] text-slate-400">@ belgisisiz</span>
+                  <span className="text-[11px] text-zinc-400">@ belgisisiz</span>
                 </label>
                 <div className="relative flex items-center">
-                  <span className="absolute left-3.5 text-sm text-slate-500 font-medium select-none">
+                  <span className="absolute left-3.5 text-sm text-zinc-500 font-medium select-none">
                     @
                   </span>
                   <input
@@ -332,25 +332,25 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                     placeholder="sizning_dokon_bot"
                     value={telegramUsername}
                     onChange={handleTelegramChange}
-                    className="w-full pl-8 pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm text-white placeholder-slate-500 outline-none transition-all"
+                    className="w-full pl-8 pr-4 py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-zinc-400 mt-1">
                   Mijoz "Buyurtma berish" tugmasini bosganda ushbu profilga to'g'ridan-to'g'ri yoziladi.
                 </p>
               </div>
 
               {/* Admin PIN */}
               <div>
-                <label className="block text-xs font-medium text-slate-300 mb-1.5 flex items-center justify-between">
+                <label className="block text-xs font-medium text-zinc-300 mb-1.5 flex items-center justify-between">
                   <span className="flex items-center gap-1.5">
-                    <Lock className="w-3.5 h-3.5 text-amber-400" />
+                    <Lock className="w-3.5 h-3.5 text-purple-400" />
                     <span>Admin PIN kod *</span>
                   </span>
                   <button
                     type="button"
                     onClick={() => setShowPin(!showPin)}
-                    className="text-[11px] text-emerald-400 hover:underline"
+                    className="text-[11px] text-indigo-400 hover:underline"
                   >
                     {showPin ? "Yashirish" : "Ko'rsatish"}
                   </button>
@@ -362,9 +362,9 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                   placeholder="Masalan: 1234"
                   value={adminPin}
                   onChange={(e) => setAdminPin(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-slate-950/70 border border-slate-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-sm font-mono tracking-wider text-white placeholder-slate-500 outline-none transition-all"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-sm font-mono tracking-wider text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
                 />
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-zinc-400 mt-1">
                   Admin panelga kirish va mahsulotlarni boshqarish uchun shaxsiy parolingiz.
                 </p>
               </div>
@@ -374,7 +374,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 disabled:opacity-60 text-slate-950 font-bold text-sm shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] transition-all"
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-400 hover:via-purple-400 hover:to-pink-400 disabled:opacity-60 text-white font-bold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.99] transition-all"
                 >
                   {loading ? (
                     <>
@@ -383,7 +383,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-4 h-4 fill-slate-950" />
+                      <Sparkles className="w-4 h-4 fill-white" />
                       <span>Do'konni ishga tushirish</span>
                     </>
                   )}
