@@ -276,14 +276,14 @@ export default function HomePage() {
                   </div>
                   <div className="flex items-start gap-2.5">
                     <Check className="w-4 h-4 text-purple-400 shrink-0 mt-0.5 stroke-[2.5]" />
-                    <span>Limitni 500 tadan ham ko&apos;paytirish imkoniyati (@A_Husanboyev orqali)</span>
+                    <span>Limitni 500 tadan ham ko&apos;paytirish imkoniyati (@instalinkpro_bot orqali)</span>
                   </div>
                 </div>
               </div>
 
               <div className="pt-8">
                 <a
-                  href="https://t.me/A_Husanboyev"
+                  href="https://t.me/instalinkpro_bot"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-400 hover:via-purple-400 hover:to-pink-400 text-white font-bold text-sm sm:text-base transition-all shadow-lg shadow-indigo-500/30 hover:scale-[1.01] active:scale-[0.99]"
