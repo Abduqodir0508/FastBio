@@ -27,21 +27,21 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 dark:bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div 
-        className="relative w-full max-w-lg bg-[#121826] border border-white/10 rounded-3xl overflow-hidden shadow-2xl text-white my-auto animate-scale-in"
+        className="relative w-full max-w-lg bg-white dark:bg-[#12131a] border border-zinc-200 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-2xl text-zinc-900 dark:text-white my-auto animate-scale-in transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-10 p-2 rounded-full bg-black/60 backdrop-blur-md text-zinc-300 hover:text-white hover:bg-black/80 transition-colors"
+          className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 z-10 p-2 rounded-full bg-black/60 backdrop-blur-md text-white/90 hover:text-white hover:bg-black/80 transition-colors"
         >
           <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {/* Product Image */}
-        <div className="relative aspect-video sm:aspect-[4/3] w-full bg-[#090D16] overflow-hidden">
+        <div className="relative aspect-video sm:aspect-[4/3] w-full bg-zinc-100 dark:bg-[#0B0C10] overflow-hidden">
           {!imageError && product.image_url ? (
             <img
               src={product.image_url}
@@ -52,13 +52,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               decoding="async"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-[#090D16] text-zinc-600 gap-2">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-100 dark:bg-[#0B0C10] text-zinc-400 dark:text-zinc-600 gap-2">
               <ImageOff className="w-8 h-8 sm:w-10 sm:h-10 stroke-[1.5]" />
               <span className="text-xs">Rasm mavjud emas</span>
             </div>
           )}
 
-          <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-xl bg-[#090D16]/90 backdrop-blur-md border border-white/10 text-indigo-300 font-black text-xs sm:text-base shadow-md">
+          <div className="absolute bottom-3 left-3 px-3 py-1.5 rounded-xl bg-white/95 dark:bg-[#0B0C10]/95 backdrop-blur-md border border-zinc-200 dark:border-zinc-800 text-rose-600 dark:text-rose-400 font-black text-xs sm:text-base shadow-md">
             {formatPrice(product.price)}
           </div>
         </div>
@@ -66,15 +66,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         {/* Details & Action */}
         <div className="p-4 sm:p-6 space-y-3.5 sm:space-y-4">
           <div>
-            <h2 className="text-lg sm:text-2xl font-bold text-white tracking-tight">
+            <h2 className="text-lg sm:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
               {product.title}
             </h2>
             {product.description ? (
-              <p className="text-xs sm:text-sm text-zinc-300 mt-2 sm:mt-2.5 whitespace-pre-line leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-300 mt-2 sm:mt-2.5 whitespace-pre-line leading-relaxed">
                 {product.description}
               </p>
             ) : (
-              <p className="text-xs sm:text-sm text-zinc-500 mt-2 italic">
+              <p className="text-xs sm:text-sm text-zinc-400 dark:text-zinc-500 mt-2 italic">
                 Qo'shimcha tavsif kiritilmagan.
               </p>
             )}
@@ -85,7 +85,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
               href={telegramOrderUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white font-bold text-xs sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-sky-500/25 transition-all hover:scale-[1.01]"
+              className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs sm:text-base flex items-center justify-center gap-2 shadow-lg shadow-rose-600/30 transition-all hover:scale-[1.01]"
             >
               <Send className="w-4 h-4 fill-white" />
               <span>Telegram orqali buyurtma berish</span>

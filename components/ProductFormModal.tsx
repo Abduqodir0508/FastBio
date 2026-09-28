@@ -93,24 +93,24 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-fade-in overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 dark:bg-black/85 backdrop-blur-md animate-fade-in overflow-y-auto">
       <div 
-        className="relative w-full max-w-lg bg-[#121826] border border-white/10 rounded-3xl p-5 sm:p-8 shadow-2xl text-white my-auto animate-scale-in max-h-[92vh] overflow-y-auto"
+        className="relative w-full max-w-lg bg-white dark:bg-[#12131a] border border-zinc-200 dark:border-zinc-800 rounded-3xl p-5 sm:p-8 shadow-2xl text-zinc-900 dark:text-white my-auto animate-scale-in max-h-[92vh] overflow-y-auto transition-colors"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-full text-zinc-400 hover:text-white hover:bg-white/[0.08] transition-colors"
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="mb-4 sm:mb-6 space-y-1 pr-6">
-          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
             <span>{isEditing ? "Mahsulotni tahrirlash" : "Yangi mahsulot qo'shish"}</span>
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-400">
+          <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
             {isEditing 
               ? "Mahsulot ma'lumotlarini o'zgartiring va saqlang."
               : "Do'koningiz katalogiga yangi mahsulot qo'shing."}
@@ -118,7 +118,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs flex items-center gap-2">
+          <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -127,8 +127,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
           {/* Title */}
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center gap-1.5">
-              <Type className="w-3.5 h-3.5 text-indigo-400" />
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1 flex items-center gap-1.5">
+              <Type className="w-3.5 h-3.5 text-rose-600 dark:text-rose-500" />
               <span>Mahsulot nomi *</span>
             </label>
             <input
@@ -137,19 +137,19 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               placeholder="Masalan: Klassik Erkaklar Ko'ylagi"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0B0C10] border border-zinc-300 dark:border-zinc-800 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 outline-none transition-all shadow-inner"
             />
           </div>
 
           {/* Price */}
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center justify-between">
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
+                <DollarSign className="w-3.5 h-3.5 text-rose-600 dark:text-rose-500" />
                 <span>Narxi (UZS) *</span>
               </span>
               {price && !isNaN(parseFloat(price)) && (
-                <span className="text-[11px] sm:text-xs font-bold text-indigo-400">
+                <span className="text-[11px] sm:text-xs font-bold text-rose-600 dark:text-rose-400">
                   {formatPrice(parseFloat(price))}
                 </span>
               )}
@@ -162,14 +162,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               placeholder="Masalan: 240000"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0B0C10] border border-zinc-300 dark:border-zinc-800 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 outline-none transition-all shadow-inner"
             />
           </div>
 
           {/* Image URL & Quick Presets */}
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center gap-1.5">
-              <ImageIcon className="w-3.5 h-3.5 text-sky-400" />
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1 flex items-center gap-1.5">
+              <ImageIcon className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
               <span>Rasm URL havolasi</span>
             </label>
             <input
@@ -180,12 +180,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 setImageUrl(e.target.value);
                 setImageError(false);
               }}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0B0C10] border border-zinc-300 dark:border-zinc-800 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 outline-none transition-all shadow-inner"
             />
 
             {/* Presets List */}
             <div className="mt-2 flex flex-wrap items-center gap-1.5">
-              <span className="text-[10px] text-zinc-400 mr-1">Namunalar:</span>
+              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 mr-1">Namunalar:</span>
               {PRESET_IMAGES.map((preset) => (
                 <button
                   key={preset.label}
@@ -196,8 +196,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   }}
                   className={`text-[10px] sm:text-[11px] px-2 py-0.5 rounded-md border transition-colors ${
                     imageUrl === preset.url
-                      ? 'bg-indigo-500/20 border-indigo-500/40 text-indigo-300'
-                      : 'bg-white/[0.04] border-white/10 text-zinc-400 hover:text-white'
+                      ? 'bg-rose-500/20 border-rose-500/40 text-rose-600 dark:text-rose-300'
+                      : 'bg-zinc-100 dark:bg-zinc-800/80 border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white'
                   }`}
                 >
                   {preset.label}
@@ -207,7 +207,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
             {/* Live Image Preview */}
             {imageUrl && (
-              <div className="mt-2.5 relative w-full h-28 sm:h-32 rounded-xl bg-[#090D16] border border-white/[0.08] overflow-hidden flex items-center justify-center">
+              <div className="mt-2.5 relative w-full h-28 sm:h-32 rounded-xl bg-zinc-100 dark:bg-[#0B0C10] border border-zinc-200 dark:border-zinc-800 overflow-hidden flex items-center justify-center">
                 {!imageError ? (
                   <img
                     src={imageUrl}
@@ -218,7 +218,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                     decoding="async"
                   />
                 ) : (
-                  <div className="flex items-center gap-2 text-xs text-red-400">
+                  <div className="flex items-center gap-2 text-xs text-red-500 dark:text-red-400">
                     <ImageOff className="w-4 h-4" />
                     <span>Rasm yuklanmadi. URL to'g'riligini tekshiring.</span>
                   </div>
@@ -229,8 +229,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
 
           {/* Description */}
           <div>
-            <label className="block text-xs font-medium text-zinc-300 mb-1 flex items-center gap-1.5">
-              <AlignLeft className="w-3.5 h-3.5 text-zinc-400" />
+            <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1 flex items-center gap-1.5">
+              <AlignLeft className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
               <span>Tavsif (ixtiyoriy)</span>
             </label>
             <textarea
@@ -238,7 +238,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
               placeholder="Mahsulot haqida qisqacha ma'lumot, o'lchamlar, ranglar..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#090D16] border border-white/10 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-xs sm:text-sm text-white placeholder-zinc-500 outline-none transition-all resize-none shadow-inner"
+              className="w-full px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0B0C10] border border-zinc-300 dark:border-zinc-800 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 outline-none transition-all resize-none shadow-inner"
             />
           </div>
 
@@ -247,14 +247,14 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] font-semibold text-xs sm:text-sm text-zinc-300 transition-colors border border-white/[0.08]"
+              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 font-semibold text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 transition-colors border border-zinc-200 dark:border-zinc-700"
             >
               Bekor qilish
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-400 hover:via-purple-400 hover:to-pink-400 disabled:opacity-60 text-white font-bold text-xs sm:text-sm shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+              className="flex-1 py-2.5 sm:py-3 px-3 sm:px-4 rounded-xl bg-rose-600 hover:bg-rose-500 disabled:opacity-60 text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
             >
               {loading ? (
                 <>
