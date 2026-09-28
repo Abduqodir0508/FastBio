@@ -32,7 +32,7 @@ export default function UpgradeModal({
   if (!isOpen) return null;
 
   const maxLimit = getProductLimit(shop);
-  const botDeepLink = `https://t.me/A_Husanboyev`;
+  const botDeepLink = `https://t.me/instalinkpro_bot?start=${shop.slug}`;
   const adminDirectLink = `https://t.me/A_Husanboyev`;
 
   return (

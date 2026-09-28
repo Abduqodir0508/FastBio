@@ -1,322 +1,425 @@
 const { Telegraf, Markup } = require('telegraf');
+const { createClient } = require('@supabase/supabase-js');
 const http = require('http');
 
 // ==============================================================================
-// SOZLAMALAR (CONFIG)
+// 1. ASOSIY KONFIGURATSIYA (ENVIRONMENT VARIABLES & DEFAULTS)
 // ==============================================================================
 const CONFIG = {
   BOT_TOKEN: process.env.BOT_TOKEN || '8606594487:AAGsSuQdu1dHek2xiBUDsgpobrep8twQDk8',
   ADMIN_CHAT_ID: process.env.ADMIN_CHAT_ID || '2067464475',
-  SUPPORT_USERNAME: 'A_Husanboyev',
-  CARD_NUMBER: '5614688714380671',
-  CARD_HOLDER: 'M.S',
-  BOT_LINK: 'https://t.me/instalinkpro_bot',
-  PORT: process.env.PORT || 3000
+  SUPPORT_USERNAME: process.env.SUPPORT_USERNAME || 'A_Husanboyev',
+  CARD_NUMBER: process.env.CARD_NUMBER || '5614688714380671',
+  CARD_HOLDER: process.env.CARD_HOLDER || 'M.S',
+  BOT_LINK: process.env.BOT_LINK || 'https://t.me/instalinkpro_bot',
+  PORT: process.env.PORT || 3000,
+  
+  // Supabase konfiguratsiyasi
+  SUPABASE_URL: process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://oojosbgogjlltxtgkeuw.supabase.co',
+  SUPABASE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_bUHKm7CZTl_WFMHIz5e69A_yM3fTQdx'
 };
 
 // ==============================================================================
-// MATNLAR VA LOKALIZATSIYA (UZ, RU, EN)
+// 2. SUPABASE MIZOJI (CLIENT)
+// ==============================================================================
+const supabase = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY, {
+  auth: { persistSession: false }
+});
+
+// ==============================================================================
+// 3. MATNLAR VA KO'P TILLILIK (UZ, RU, EN)
 // ==============================================================================
 const MESSAGES = {
   uz: {
-    welcome: (name) => `👋 Assalomu alaykum, <b>${name}</b>!\n\nIltimos, muloqot tilini tanlang:\nПожалуйста, выберите язык:\nPlease select your language:`,
-    lang_selected: "✅ O'zbek tili tanlandi.",
-    pricing_info: (cardNum, cardHolder, support) =>
+    no_store_error: (support) =>
+      `⚠️ <b>Xatolik: Do'kon aniqlanmadi!</b>\n\n` +
+      `Iltimos, avval <code>myinstalink.vercel.app</code> saytiga kirib, o'z do'koningiz admin panelidagi <b>"Pro tarifni olish"</b> tugmasi orqali botga o'ting.\n\n` +
+      `💬 Savollaringiz bo'lsa: @${support}`,
+    
+    store_not_found: (slug, support) =>
+      `❌ <b>Do'kon topilmadi!</b>\n\n` +
+      `Bazada <code>${slug}</code> nomli do'kon mavjud emas. Iltimos, havolani to'g'ri ochganingizga ishonch hosil qiling.\n\n` +
+      `💬 Yordam: @${support}`,
+
+    store_welcome: (shopName, slug) =>
+      `🏪 <b>Do'kon:</b> ${shopName}\n` +
+      `🔗 <b>Havola:</b> <code>myinstalink.vercel.app/${slug}</code>\n\n` +
+      `Iltimos, muloqot tilini tanlang:\nПожалуйста, выберите язык:\nPlease select your language:`,
+
+    pricing_info: (shopName, slug, cardNum, cardHolder, support) =>
+      `🏪 <b>Tanlangan do'kon:</b> ${shopName} (<code>${slug}</code>)\n` +
+      `🔗 <b>Havola:</b> myinstalink.vercel.app/${slug}\n\n` +
       `💎 <b>InstaLink Pro tarifi:</b> 150 000 so'm\n` +
-      `<i>(500 tagacha mahsulot joylash va barcha imkoniyatlar)</i>\n\n` +
+      `<i>(500 tagacha mahsulot joylash imkoniyati, VIP status va barcha imkoniyatlar)</i>\n\n` +
       `💳 <b>To'lov uchun karta:</b>\n<code>${cardNum}</code> (${cardHolder})\n\n` +
       `📸 <b>Yo'riqnoma:</b> To'lovni amalga oshirib, chekni (screenshot yoki rasm shaklida) ushbu botga yuboring.\n\n` +
       `💬 <b>Savollaringiz bo'lsa:</b> @${support}`,
+
     receipt_received: (support) =>
       `✅ <b>Chek qabul qilindi!</b>\n\n` +
       `Admin tasdiqlashi bilan Pro versiyangiz yoqiladi. Uzoog'i 5 daqiqa kuting.\n\n` +
       `Savollar bo'lsa: @${support}`,
-    approved_user:
+
+    approved_user: (shopName) =>
       `🎉 <b>To'lovingiz tasdiqlandi!</b>\n\n` +
-      `InstaLink Pro versiyangiz muvaffaqiyatli yoqildi. Xizmatingizdan mamnunmiz! 🚀`,
-    rejected_user: (support) =>
+      `Sizning <b>"${shopName}"</b> do'koningiz uchun <b>InstaLink Pro</b> versiyasi muvaffaqiyatli yoqildi! 🚀\n\n` +
+      `Endi siz 500 tagacha mahsulot joylashingiz mumkin. Do'koningizni rivojlantirishda omad tilaymiz!`,
+
+    rejected_user: (shopName, support) =>
       `❌ <b>To'lov tasdiqlanmadi yoki chekda xatolik bor.</b>\n\n` +
-      `Iltimos, ma'lumotni tekshirib qaytadan yuboring yoki adminga (@${support}) murojaat qiling.`,
-    change_lang_btn: "🌐 Tilni o'zgartirish",
-    btn_uz: "🇺🇿 O'zbekcha",
-    btn_ru: "🇷🇺 Русский",
-    btn_en: "🇬🇧 English"
+      `<b>"${shopName}"</b> do'koni uchun to'lov qabul qilinmadi. Iltimos, ma'lumotni tekshirib qaytadan yuboring yoki adminga (@${support}) murojaat qiling.`,
+
+    change_lang_btn: "🌐 Tilni o'zgartirish"
   },
+
   ru: {
-    welcome: (name) => `👋 Здравствуйте, <b>${name}</b>!\n\nПожалуйста, выберите язык:\nIltimos, muloqot tilini tanlang:\nPlease select your language:`,
-    lang_selected: "✅ Выбран русский язык.",
-    pricing_info: (cardNum, cardHolder, support) =>
+    no_store_error: (support) =>
+      `⚠️ <b>Ошибка: Магазин не определен!</b>\n\n` +
+      `Пожалуйста, перейдите на сайт <code>myinstalink.vercel.app</code> и нажмите кнопку <b>"Получить PRO"</b> в панели управления вашего магазина.\n\n` +
+      `💬 Поддержка: @${support}`,
+
+    store_not_found: (slug, support) =>
+      `❌ <b>Магазин не найден!</b>\n\n` +
+      `Магазин <code>${slug}</code> не найден в базе. Пожалуйста, проверьте ссылку.\n\n` +
+      `💬 Поддержка: @${support}`,
+
+    store_welcome: (shopName, slug) =>
+      `🏪 <b>Магазин:</b> ${shopName}\n` +
+      `🔗 <b>Ссылка:</b> <code>myinstalink.vercel.app/${slug}</code>\n\n` +
+      `Пожалуйста, выберите язык / Iltimos, tilni tanlang:`,
+
+    pricing_info: (shopName, slug, cardNum, cardHolder, support) =>
+      `🏪 <b>Выбранный магазин:</b> ${shopName} (<code>${slug}</code>)\n` +
+      `🔗 <b>Ссылка:</b> myinstalink.vercel.app/${slug}\n\n` +
       `💎 <b>Тариф InstaLink Pro:</b> 150 000 сум\n` +
       `<i>(Возможность добавления до 500 товаров и все функции)</i>\n\n` +
       `💳 <b>Карта для оплаты:</b>\n<code>${cardNum}</code> (${cardHolder})\n\n` +
       `📸 <b>Инструкция:</b> Оплатите и отправьте чек (скриншот или фото) в этот бот.\n\n` +
       `💬 <b>По вопросам:</b> @${support}`,
+
     receipt_received: (support) =>
       `✅ <b>Чек принят!</b>\n\n` +
       `После проверки администратором ваша Pro версия будет активирована. Ожидайте до 5 минут.\n\n` +
       `Если есть вопросы: @${support}`,
-    approved_user:
+
+    approved_user: (shopName) =>
       `🎉 <b>Ваш платёж подтверждён!</b>\n\n` +
-      `Тариф InstaLink Pro успешно активирован. Приятного пользования! 🚀`,
-    rejected_user: (support) =>
+      `Для вашего магазина <b>"${shopName}"</b> тариф <b>InstaLink Pro</b> успешно активирован! 🚀\n\n` +
+      `Теперь вам доступно добавление до 500 товаров!`,
+
+    rejected_user: (shopName, support) =>
       `❌ <b>Оплата не подтверждена или в чеке есть ошибка.</b>\n\n` +
-      `Пожалуйста, проверьте данные и отправьте снова или обратитесь к администратору (@${support}).`,
-    change_lang_btn: "🌐 Сменить язык",
-    btn_uz: "🇺🇿 O'zbekcha",
-    btn_ru: "🇷🇺 Русский",
-    btn_en: "🇬🇧 English"
+      `Запрос для магазина <b>"${shopName}"</b> отклонен. Пожалуйста, свяжитесь с администратором: @${support}`,
+
+    change_lang_btn: "🌐 Сменить язык"
   },
+
   en: {
-    welcome: (name) => `👋 Hello, <b>${name}</b>!\n\nPlease select your language:\nIltimos, muloqot tilini tanlang:\nПожалуйста, выберите язык:`,
-    lang_selected: "✅ English selected.",
-    pricing_info: (cardNum, cardHolder, support) =>
+    no_store_error: (support) =>
+      `⚠️ <b>Error: Store not recognized!</b>\n\n` +
+      `Please visit <code>myinstalink.vercel.app</code> and click the <b>"Upgrade to PRO"</b> button in your store's admin panel to start.\n\n` +
+      `💬 Support: @${support}`,
+
+    store_not_found: (slug, support) =>
+      `❌ <b>Store not found!</b>\n\n` +
+      `Store <code>${slug}</code> was not found in the database. Please verify your link.\n\n` +
+      `💬 Support: @${support}`,
+
+    store_welcome: (shopName, slug) =>
+      `🏪 <b>Store:</b> ${shopName}\n` +
+      `🔗 <b>Link:</b> <code>myinstalink.vercel.app/${slug}</code>\n\n` +
+      `Please select your language:`,
+
+    pricing_info: (shopName, slug, cardNum, cardHolder, support) =>
+      `🏪 <b>Selected Store:</b> ${shopName} (<code>${slug}</code>)\n` +
+      `🔗 <b>Link:</b> myinstalink.vercel.app/${slug}\n\n` +
       `💎 <b>InstaLink Pro Plan:</b> 150,000 UZS\n` +
-      `<i>(Upload up to 500 products and unlock all features)</i>\n\n` +
+      `<i>(Upload up to 500 products and unlock full potential)</i>\n\n` +
       `💳 <b>Payment card:</b>\n<code>${cardNum}</code> (${cardHolder})\n\n` +
       `📸 <b>Instruction:</b> Complete the payment and send the receipt (screenshot or photo) to this bot.\n\n` +
-      `💬 <b>For support:</b> @${support}`,
+      `💬 <b>Support:</b> @${support}`,
+
     receipt_received: (support) =>
       `✅ <b>Receipt received!</b>\n\n` +
       `Your Pro version will be activated as soon as the admin verifies the payment (within 5 minutes).\n\n` +
       `For any questions: @${support}`,
-    approved_user:
+
+    approved_user: (shopName) =>
       `🎉 <b>Your payment has been verified!</b>\n\n` +
-      `InstaLink Pro has been successfully activated. Thank you! 🚀`,
-    rejected_user: (support) =>
+      `<b>InstaLink Pro</b> has been successfully activated for <b>"${shopName}"</b>! 🚀\n\n` +
+      `You can now add up to 500 products!`,
+
+    rejected_user: (shopName, support) =>
       `❌ <b>Payment not verified or receipt is invalid.</b>\n\n` +
-      `Please check the details and resend, or contact the admin (@${support}).`,
-    change_lang_btn: "🌐 Change Language",
-    btn_uz: "🇺🇿 O'zbekcha",
-    btn_ru: "🇷🇺 Русский",
-    btn_en: "🇬🇧 English"
+      `Request for store <b>"${shopName}"</b> was rejected. Please contact admin: @${support}`,
+
+    change_lang_btn: "🌐 Change Language"
   }
 };
 
-// Foydalanuvchilar tanlagan tillarini xotirada saqlash
-const userLanguages = new Map();
+// ==============================================================================
+// 4. FOYDALANUVCHI SESSIYASI (IN-MEMORY MAP)
+// ==============================================================================
+// userId => { slug, name, id, lang }
+const userSessions = new Map();
 
-function getUserLang(userId) {
-  return userLanguages.get(String(userId)) || 'uz';
+function getUserSession(userId) {
+  return userSessions.get(String(userId)) || null;
 }
 
-function setUserLang(userId, lang) {
-  userLanguages.set(String(userId), lang);
+function setUserSession(userId, sessionData) {
+  const current = userSessions.get(String(userId)) || {};
+  userSessions.set(String(userId), { ...current, ...sessionData });
 }
 
 // ==============================================================================
-// BOT INSTANSIYASINI YARATISH
+// 5. TELEGRAF BOTNI YARATISH
 // ==============================================================================
 const bot = new Telegraf(CONFIG.BOT_TOKEN);
 
-// Til tanlash klaviaturasi
 function getLanguageKeyboard() {
   return Markup.inlineKeyboard([
     [
-      Markup.button.callback("🇺🇿 O'zbekcha", "set_lang_uz"),
-      Markup.button.callback("🇷🇺 Русский", "set_lang_ru"),
-      Markup.button.callback("🇬🇧 English", "set_lang_en")
+      Markup.button.callback("🇺🇿 O'zbekcha", "lang_uz"),
+      Markup.button.callback("🇷🇺 Русский", "lang_ru"),
+      Markup.button.callback("🇬🇧 English", "lang_en")
     ]
   ]);
 }
 
-// Asosiy menyu klaviaturasi (Tilni o'zgartirish tugmasi bilan)
 function getMainKeyboard(lang) {
   const t = MESSAGES[lang] || MESSAGES.uz;
   return Markup.inlineKeyboard([
-    [Markup.button.callback(t.change_lang_btn, "show_languages")]
+    [Markup.button.callback(t.change_lang_btn, "show_lang_picker")]
   ]);
 }
 
-// 1. /start komandasi
+// ==============================================================================
+// 6. /start KOMANDASI VA DEEP LINKING TEKSHIRUVI
+// ==============================================================================
 bot.start(async (ctx) => {
-  const firstName = ctx.from.first_name || 'Foydalanuvchi';
-  await ctx.replyWithHTML(
-    MESSAGES.uz.welcome(firstName),
-    getLanguageKeyboard()
-  );
-});
+  const userId = ctx.from.id;
+  let rawPayload = (ctx.payload || '').trim();
 
-// Tilni o'zgartirish tugmasi bosilganda
-bot.action('show_languages', async (ctx) => {
+  // 1. Agar parametr bo'lmasa -> To'lovga ruxsat yo'q!
+  if (!rawPayload) {
+    const existingSession = getUserSession(userId);
+    if (!existingSession || !existingSession.slug) {
+      return ctx.replyWithHTML(MESSAGES.uz.no_store_error(CONFIG.SUPPORT_USERNAME));
+    }
+    rawPayload = existingSession.slug;
+  }
+
+  // 2. Slugni tozalash
+  const storeSlug = rawPayload.replace(/^upgrade_/, '').trim().toLowerCase();
+
   try {
-    await ctx.answerCbQuery();
-    const firstName = ctx.from.first_name || 'Foydalanuvchi';
+    // 3. Supabase bazasidan do'konni tekshirish
+    const { data: shop, error } = await supabase
+      .from('shops')
+      .select('*')
+      .eq('slug', storeSlug)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Supabase query error:', error);
+    }
+
+    if (!shop) {
+      return ctx.replyWithHTML(MESSAGES.uz.store_not_found(storeSlug, CONFIG.SUPPORT_USERNAME));
+    }
+
+    // 4. Do'kon ma'lumotlarini foydalanuvchi sessiyasiga saqlash
+    const currentLang = getUserSession(userId)?.lang || 'uz';
+    setUserSession(userId, {
+      slug: shop.slug,
+      name: shop.name,
+      id: shop.id,
+      lang: currentLang
+    });
+
+    // 5. Til tanlash tugmalarini chiqarish
     await ctx.replyWithHTML(
-      MESSAGES.uz.welcome(firstName),
+      MESSAGES[currentLang].store_welcome(shop.name, shop.slug),
       getLanguageKeyboard()
     );
   } catch (err) {
-    console.error("Error in show_languages action:", err);
+    console.error('Start payload processing error:', err);
+    ctx.replyWithHTML(MESSAGES.uz.no_store_error(CONFIG.SUPPORT_USERNAME));
+  }
+});
+
+// Til tanlash oynasini qayta chaqirish
+bot.action('show_lang_picker', async (ctx) => {
+  try {
+    await ctx.answerCbQuery();
+    const userId = ctx.from.id;
+    const session = getUserSession(userId);
+    const lang = session?.lang || 'uz';
+    const shopName = session?.name || "Do'kon";
+    const slug = session?.slug || '';
+
+    await ctx.replyWithHTML(
+      MESSAGES[lang].store_welcome(shopName, slug),
+      getLanguageKeyboard()
+    );
+  } catch (err) {
+    console.error('show_lang_picker error:', err);
   }
 });
 
 // Til tanlanganda (uz, ru, en)
 ['uz', 'ru', 'en'].forEach((lang) => {
-  bot.action(`set_lang_${lang}`, async (ctx) => {
+  bot.action(`lang_${lang}`, async (ctx) => {
     try {
       await ctx.answerCbQuery();
       const userId = ctx.from.id;
-      setUserLang(userId, lang);
+      const session = getUserSession(userId);
+
+      if (!session || !session.slug) {
+        return ctx.replyWithHTML(MESSAGES[lang].no_store_error(CONFIG.SUPPORT_USERNAME));
+      }
+
+      setUserSession(userId, { lang });
 
       const t = MESSAGES[lang];
-      
-      // Rekvizitlar va ma'lumot xabarini yuborish
       await ctx.replyWithHTML(
-        t.pricing_info(CONFIG.CARD_NUMBER, CONFIG.CARD_HOLDER, CONFIG.SUPPORT_USERNAME),
+        t.pricing_info(session.name, session.slug, CONFIG.CARD_NUMBER, CONFIG.CARD_HOLDER, CONFIG.SUPPORT_USERNAME),
         getMainKeyboard(lang)
       );
     } catch (err) {
-      console.error(`Error in set_lang_${lang} action:`, err);
+      console.error(`lang_${lang} error:`, err);
     }
   });
 });
 
-// 2. Foydalanuvchi to'lov chekini (rasm/photo) yuborganda
-bot.on('photo', async (ctx) => {
+// ==============================================================================
+// 7. TO'LOV CHEKI RASMINI QABUL QILISH (PHOTO & DOCUMENT)
+// ==============================================================================
+async function handleReceiptSubmission(ctx, fileId, isDocument = false) {
   const userId = ctx.from.id;
-  const lang = getUserLang(userId);
+  const session = getUserSession(userId);
+  const lang = session?.lang || 'uz';
   const t = MESSAGES[lang];
 
+  // Agar do'kon sessiyasi bo'lmasa
+  if (!session || !session.slug) {
+    return ctx.replyWithHTML(t.no_store_error(CONFIG.SUPPORT_USERNAME));
+  }
+
   try {
-    // 1. Foydalanuvchiga tasdiq xabarini qaytarish
+    // 1. Foydalanuvchiga darhol tasdiq xabarini berish
     await ctx.replyWithHTML(t.receipt_received(CONFIG.SUPPORT_USERNAME));
 
-    // 2. Eng yuqori sifatli rasmni olish
-    const photos = ctx.message.photo;
-    const bestPhotoId = photos[photos.length - 1].file_id;
-
-    // 3. Adminga yuboriladigan ma'lumot matni
+    // 2. Adminga yuboriladigan ma'lumotlar
     const userFullName = `${ctx.from.first_name || ''} ${ctx.from.last_name || ''}`.trim();
     const usernameDisplay = ctx.from.username ? `@${ctx.from.username}` : 'Mavjud emas';
 
     const adminCaption =
-      `🔔 <b>Yangi to'lov cheki!</b>\n\n` +
+      `🔔 <b>YANGI TO'LOV CHEKI!</b>\n\n` +
+      `🏪 <b>Do'kon:</b> ${session.name}\n` +
+      `🔗 <b>Slug:</b> <code>${session.slug}</code> (myinstalink.vercel.app/${session.slug})\n` +
       `👤 <b>Foydalanuvchi:</b> ${userFullName} (${usernameDisplay})\n` +
-      `🆔 <b>ID:</b> <code>${userId}</code>\n` +
+      `🆔 <b>User ID:</b> <code>${userId}</code>\n` +
       `🌐 <b>Til:</b> ${lang.toUpperCase()}\n` +
       `💎 <b>Tarif:</b> InstaLink Pro (150 000 so'm)\n\n` +
       `Quyidagi tugmalar orqali tasdiqlang yoki rad eting:`;
 
     const adminKeyboard = Markup.inlineKeyboard([
       [
-        Markup.button.callback("✅ Tasdiqlash", `approve_${userId}`),
-        Markup.button.callback("❌ Rad etish", `reject_${userId}`)
+        Markup.button.callback("✅ Tasdiqlash", `approve_${userId}_${session.slug}`),
+        Markup.button.callback("❌ Rad etish", `reject_${userId}_${session.slug}`)
       ]
     ]);
 
-    // 4. Adminga rasmni tugmalar bilan yuborish
-    await ctx.telegram.sendPhoto(CONFIG.ADMIN_CHAT_ID, bestPhotoId, {
-      caption: adminCaption,
-      parse_mode: 'HTML',
-      ...adminKeyboard
-    });
-  } catch (err) {
-    console.error("Error processing photo:", err);
-    ctx.reply("⚠️ Xatolik yuz berdi. Iltimos qaytadan urinib ko'ring yoki adminga yozing: @" + CONFIG.SUPPORT_USERNAME);
-  }
-});
-
-// Foydalanuvchi chekni rasm ko'rinishidagi fayl (document) shaklida yuborsa
-bot.on('document', async (ctx) => {
-  const userId = ctx.from.id;
-  const lang = getUserLang(userId);
-  const t = MESSAGES[lang];
-
-  try {
-    const doc = ctx.message.document;
-    const isImage = doc.mime_type && doc.mime_type.startsWith('image/');
-
-    // Foydalanuvchiga tasdiq xabari
-    await ctx.replyWithHTML(t.receipt_received(CONFIG.SUPPORT_USERNAME));
-
-    const userFullName = `${ctx.from.first_name || ''} ${ctx.from.last_name || ''}`.trim();
-    const usernameDisplay = ctx.from.username ? `@${ctx.from.username}` : 'Mavjud emas';
-
-    const adminCaption =
-      `🔔 <b>Yangi to'lov cheki (Hujjat/Fayl)!</b>\n\n` +
-      `👤 <b>Foydalanuvchi:</b> ${userFullName} (${usernameDisplay})\n` +
-      `🆔 <b>ID:</b> <code>${userId}</code>\n` +
-      `🌐 <b>Til:</b> ${lang.toUpperCase()}\n` +
-      `💎 <b>Tarif:</b> InstaLink Pro (150 000 so'm)`;
-
-    const adminKeyboard = Markup.inlineKeyboard([
-      [
-        Markup.button.callback("✅ Tasdiqlash", `approve_${userId}`),
-        Markup.button.callback("❌ Rad etish", `reject_${userId}`)
-      ]
-    ]);
-
-    await ctx.telegram.sendDocument(CONFIG.ADMIN_CHAT_ID, doc.file_id, {
-      caption: adminCaption,
-      parse_mode: 'HTML',
-      ...adminKeyboard
-    });
-  } catch (err) {
-    console.error("Error processing document:", err);
-  }
-});
-
-// ==============================================================================
-// ADMIN QARORI (TASDIQLASH / RAD ETISH)
-// ==============================================================================
-
-// Admin [✅ Tasdiqlash] tugmasini bosganda
-bot.action(/^approve_(\d+)$/, async (ctx) => {
-  try {
-    await ctx.answerCbQuery("To'lov tasdiqlandi!");
-    const targetUserId = ctx.match[1];
-    const userLang = getUserLang(targetUserId);
-    const t = MESSAGES[userLang];
-
-    // 1. Foydalanuvchiga o'z tilida tasdiq xabarini jo'natish
-    try {
-      await ctx.telegram.sendMessage(targetUserId, t.approved_user, {
-        parse_mode: 'HTML'
-      });
-    } catch (sendErr) {
-      console.error("Foydalanuvchiga xabar yuborib bo'lmadi:", sendErr);
-    }
-
-    // 2. Admindagi xabar captionini yangilash va tugmalarni olib tashlash
-    const originalCaption = ctx.callbackQuery.message?.caption || '';
-    const updatedCaption = `${originalCaption}\n\n━━━━━━━━━━━━━━━\n✅ <b>USHBU CHEK TASDIQLANDI VA PRO YOQILDI!</b>\n👤 Admin: @${ctx.from.username || ctx.from.first_name}`;
-
-    try {
-      await ctx.editMessageCaption(updatedCaption, {
+    // 3. Adminga yuborish
+    if (isDocument) {
+      await ctx.telegram.sendDocument(CONFIG.ADMIN_CHAT_ID, fileId, {
+        caption: adminCaption,
         parse_mode: 'HTML',
-        reply_markup: { inline_keyboard: [] }
+        ...adminKeyboard
       });
-    } catch (editErr) {
-      // Agar caption o'zgarmasa yoki rasm bo'lmasa
-      await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+    } else {
+      await ctx.telegram.sendPhoto(CONFIG.ADMIN_CHAT_ID, fileId, {
+        caption: adminCaption,
+        parse_mode: 'HTML',
+        ...adminKeyboard
+      });
     }
   } catch (err) {
-    console.error("Error in approve action:", err);
+    console.error('Receipt forwarding error:', err);
+    ctx.reply("⚠️ Xatolik yuz berdi. Iltimos adminga yozing: @" + CONFIG.SUPPORT_USERNAME);
   }
+}
+
+bot.on('photo', async (ctx) => {
+  const photos = ctx.message.photo;
+  const bestPhotoId = photos[photos.length - 1].file_id;
+  await handleReceiptSubmission(ctx, bestPhotoId, false);
 });
 
-// Admin [❌ Rad etish] tugmasini bosganda
-bot.action(/^reject_(\d+)$/, async (ctx) => {
-  try {
-    await ctx.answerCbQuery("To'lov rad etildi.");
-    const targetUserId = ctx.match[1];
-    const userLang = getUserLang(targetUserId);
-    const t = MESSAGES[userLang];
+bot.on('document', async (ctx) => {
+  const doc = ctx.message.document;
+  await handleReceiptSubmission(ctx, doc.file_id, true);
+});
 
-    // 1. Foydalanuvchiga rad etilganlik xabarini jo'natish
+// ==============================================================================
+// 8. ADMIN QARORI VA SUPABASE UPDATE INTEGRATSIYASI
+// ==============================================================================
+
+// Admin [✅ Tasdiqlash] bosganda
+bot.action(/^approve_(\d+)_(.+)$/, async (ctx) => {
+  try {
+    const targetUserId = ctx.match[1];
+    const storeSlug = ctx.match[2];
+    const session = getUserSession(targetUserId);
+    const lang = session?.lang || 'uz';
+    const shopName = session?.name || storeSlug;
+
+    await ctx.answerCbQuery("Tasdiqlanmoqda...");
+
+    // 1. Supabase bazasida do'konni PRO qilish va limitni 500 ga oshirish
+    let supabaseSuccess = false;
     try {
+      const { data, error } = await supabase
+        .from('shops')
+        .update({
+          is_pro: true,
+          custom_limit: 500
+        })
+        .eq('slug', storeSlug)
+        .select()
+        .maybeSingle();
+
+      if (error) {
+        console.error('Supabase update error:', error);
+      } else {
+        supabaseSuccess = true;
+      }
+    } catch (dbErr) {
+      console.error('Supabase execution error:', dbErr);
+    }
+
+    // 2. Foydalanuvchiga muvaffaqiyat xabarini yuborish
+    try {
+      const t = MESSAGES[lang] || MESSAGES.uz;
       await ctx.telegram.sendMessage(
         targetUserId,
-        t.rejected_user(CONFIG.SUPPORT_USERNAME),
+        t.approved_user(shopName),
         { parse_mode: 'HTML' }
       );
-    } catch (sendErr) {
-      console.error("Foydalanuvchiga xabar yuborib bo'lmadi:", sendErr);
+    } catch (userMsgErr) {
+      console.error('User message sending error:', userMsgErr);
     }
 
-    // 2. Admindagi xabar captionini yangilash va tugmalarni olib tashlash
+    // 3. Admindagi xabar matnini o'zgartirish va tugmalarni o'chirish
     const originalCaption = ctx.callbackQuery.message?.caption || '';
-    const updatedCaption = `${originalCaption}\n\n━━━━━━━━━━━━━━━\n❌ <b>USHBU CHEK RAD ETILDI.</b>\n👤 Admin: @${ctx.from.username || ctx.from.first_name}`;
+    const updatedCaption =
+      `${originalCaption}\n\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `✅ <b>USHBU CHEK TASDIQLANDI!</b>\n` +
+      `🏪 <b>Do'kon:</b> ${storeSlug} (PRO va 500 limit yoqildi)\n` +
+      `👤 <b>Admin:</b> @${ctx.from.username || ctx.from.first_name}`;
 
     try {
       await ctx.editMessageCaption(updatedCaption, {
@@ -327,51 +430,94 @@ bot.action(/^reject_(\d+)$/, async (ctx) => {
       await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
     }
   } catch (err) {
-    console.error("Error in reject action:", err);
+    console.error('Approve action error:', err);
   }
 });
 
-// Global xatoliklarni ushlash (Error handler)
+// Admin [❌ Rad etish] bosganda
+bot.action(/^reject_(\d+)_(.+)$/, async (ctx) => {
+  try {
+    const targetUserId = ctx.match[1];
+    const storeSlug = ctx.match[2];
+    const session = getUserSession(targetUserId);
+    const lang = session?.lang || 'uz';
+    const shopName = session?.name || storeSlug;
+
+    await ctx.answerCbQuery("Chek rad etildi.");
+
+    // 1. Foydalanuvchiga rad etilganlik xabari
+    try {
+      const t = MESSAGES[lang] || MESSAGES.uz;
+      await ctx.telegram.sendMessage(
+        targetUserId,
+        t.rejected_user(shopName, CONFIG.SUPPORT_USERNAME),
+        { parse_mode: 'HTML' }
+      );
+    } catch (userMsgErr) {
+      console.error('User reject message sending error:', userMsgErr);
+    }
+
+    // 2. Admindagi xabar matnini yangilash
+    const originalCaption = ctx.callbackQuery.message?.caption || '';
+    const updatedCaption =
+      `${originalCaption}\n\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `❌ <b>USHBU CHEK RAD ETILDI.</b>\n` +
+      `🏪 <b>Do'kon:</b> ${storeSlug}\n` +
+      `👤 <b>Admin:</b> @${ctx.from.username || ctx.from.first_name}`;
+
+    try {
+      await ctx.editMessageCaption(updatedCaption, {
+        parse_mode: 'HTML',
+        reply_markup: { inline_keyboard: [] }
+      });
+    } catch (editErr) {
+      await ctx.editMessageReplyMarkup({ inline_keyboard: [] });
+    }
+  } catch (err) {
+    console.error('Reject action error:', err);
+  }
+});
+
+// Global xatoliklarni ushlash
 bot.catch((err, ctx) => {
-  console.error(`❌ Botda xatolik yuz berdi (${ctx?.updateType}):`, err);
+  console.error(`❌ Telegraf Error (${ctx?.updateType}):`, err);
 });
 
 // ==============================================================================
-// 24/7 CLOUD HOSTING UCHUN HTTP HEALTH CHECK SERVER
+// 9. 24/7 CLOUD HOSTING UCHUN HTTP HEALTH CHECK SERVER
 // ==============================================================================
 const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
-  res.end('🤖 InstaLink PRO Telegram Bot 24/7 ishlash holatida!');
+  res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.end(JSON.stringify({
+    status: 'online',
+    app: 'InstaLink PRO Telegram Bot',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString()
+  }));
 });
 
 server.listen(CONFIG.PORT, () => {
-  console.log(`🌐 Health check server ${CONFIG.PORT}-portda tinglanmoqda`);
+  console.log(`🌐 Health check server ${CONFIG.PORT}-portda faol`);
 });
 
 // ==============================================================================
-// BOTNI ISHGA TUSHIRISH
+// 10. BOTNI ISHGA TUSHIRISH
 // ==============================================================================
-bot.launch({
-  dropPendingUpdates: true
-})
+bot.launch({ dropPendingUpdates: true })
   .then(() => {
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('🚀 InstaLink PRO Telegram Bot ishga tushdi!');
-    console.log(`🤖 Bot havolasi: ${CONFIG.BOT_LINK}`);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('🚀 InstaLink PRO Deep-Linking Bot muvaffaqiyatli ishga tushdi!');
+    console.log(`🤖 Bot manzili: ${CONFIG.BOT_LINK}`);
     console.log(`👑 Admin Chat ID: ${CONFIG.ADMIN_CHAT_ID}`);
+    console.log(`🗄️ Supabase URL: ${CONFIG.SUPABASE_URL}`);
     console.log(`💳 Karta: ${CONFIG.CARD_NUMBER} (${CONFIG.CARD_HOLDER})`);
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   })
   .catch((err) => {
-    console.error('❌ Botni ishga tushirishda xatolik:', err);
+    console.error('❌ Bot launch xatosi:', err);
   });
 
-// Xavfsiz to'xtatish (Graceful Shutdown)
-process.once('SIGINT', () => {
-  server.close();
-  bot.stop('SIGINT');
-});
-process.once('SIGTERM', () => {
-  server.close();
-  bot.stop('SIGTERM');
-});
+// Xavfsiz to'xtatish
+process.once('SIGINT', () => { server.close(); bot.stop('SIGINT'); });
+process.once('SIGTERM', () => { server.close(); bot.stop('SIGTERM'); });
