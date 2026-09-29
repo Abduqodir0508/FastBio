@@ -77,39 +77,55 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
     e.preventDefault();
     setError(null);
 
-    if (!name.trim()) {
+    const trimmedName = name.trim();
+    const trimmedSlug = slugify(slug.trim());
+    const trimmedTg = cleanTelegramUsername(telegramUsername.trim());
+    const trimmedPin = adminPin.trim();
+
+    if (!trimmedName) {
       setError("Do'kon nomini kiriting");
       return;
     }
-    if (!slug.trim()) {
+    if (!trimmedSlug) {
       setError("Do'kon manzilini (slug) kiriting");
       return;
     }
-    if (!telegramUsername.trim()) {
+    if (!trimmedTg) {
       setError("Telegram username kiriting");
       return;
     }
-    if (!adminPin.trim() || adminPin.trim().length < 4) {
+    if (!trimmedPin || trimmedPin.length < 4) {
       setError("Admin PIN kod kamida 4 ta belgidan iborat bo'lishi kerak");
       return;
     }
 
     setLoading(true);
+    console.log('[CreateShop] Do\'kon ochish boshlanmoqda:', {
+      name: trimmedName,
+      slug: trimmedSlug,
+      telegram_username: trimmedTg,
+      admin_pin: '***'
+    });
+
     try {
       const res = await createShop({
-        name: name.trim(),
-        slug: slug.trim(),
-        telegram_username: telegramUsername.trim(),
-        admin_pin: adminPin.trim(),
+        name: trimmedName,
+        slug: trimmedSlug,
+        telegram_username: trimmedTg,
+        admin_pin: trimmedPin,
       });
 
       if (res.error || !res.shop) {
-        setError(res.error || "Do'kon ochishda xatolik yuz berdi");
+        const errorMsg = res.error || "Do'kon ochishda xatolik yuz berdi";
+        console.error('[CreateShop] Xatolik yuz berdi:', errorMsg);
+        setError(errorMsg);
         setLoading(false);
         return;
       }
 
-      // Success!
+      console.log('[CreateShop] Do\'kon muvaffaqiyatli ochildi:', res.shop);
+
+      // Success state
       setCreatedShop({
         slug: res.shop.slug,
         name: res.shop.name,
@@ -129,11 +145,13 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
           origin: { y: 0.6 }
         });
       } catch (e) {
-        // Ignore if confetti fails in some environments
+        // Ignore if confetti fails in non-supported environments
       }
 
     } catch (err: any) {
-      setError(err.message || "Kutilmagan xatolik yuz berdi");
+      console.error('[CreateShop] Kutilmagan xatolik (catch):', err);
+      const message = err?.message || "Kutilmagan xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -167,6 +185,8 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
         {/* Close Button */}
         <button
           onClick={onClose}
+          type="button"
+          aria-label="Yopish"
           className="absolute top-4 right-4 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
         >
           <X className="w-5 h-5" />
@@ -198,6 +218,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                   {fullPublicUrl}
                 </div>
                 <button
+                  type="button"
                   onClick={handleCopyLink}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-200 hover:bg-zinc-300 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-xs font-medium text-zinc-800 dark:text-zinc-200 transition-colors shrink-0"
                 >
@@ -229,6 +250,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
             {/* Action Buttons */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
               <button
+                type="button"
                 onClick={() => {
                   onClose();
                   router.push(`/${createdShop.slug}`);
@@ -238,6 +260,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                 Mijoz ko'rinishi
               </button>
               <button
+                type="button"
                 onClick={handleGoToAdmin}
                 className="w-full py-3 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 font-bold text-sm text-white shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
               >
@@ -263,9 +286,9 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
             </div>
 
             {error && (
-              <div className="mb-5 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                <span>{error}</span>
+              <div className="mb-5 p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs flex items-start gap-2.5 animate-shake">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-red-500" />
+                <span className="leading-relaxed">{error}</span>
               </div>
             )}
 
@@ -297,7 +320,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                 </label>
                 <div className="relative flex items-center">
                   <span className="absolute left-3.5 text-xs text-zinc-500 dark:text-zinc-400 font-mono select-none">
-                    myinstalink.vercel.app/
+                    instalink.uz/
                   </span>
                   <input
                     type="text"
@@ -305,7 +328,7 @@ export const CreateShopModal: React.FC<CreateShopModalProps> = ({ isOpen, onClos
                     placeholder="modiy_kiyimlar"
                     value={slug}
                     onChange={handleSlugChange}
-                    className="w-full pl-[170px] pr-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0B0C10] border border-zinc-300 dark:border-zinc-800 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-sm font-mono text-rose-600 dark:text-rose-400 placeholder-zinc-400 dark:placeholder-zinc-600 outline-none transition-all shadow-inner"
+                    className="w-full pl-[95px] pr-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-[#0B0C10] border border-zinc-300 dark:border-zinc-800 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 text-sm font-mono text-rose-600 dark:text-rose-400 placeholder-zinc-400 dark:placeholder-zinc-600 outline-none transition-all shadow-inner"
                   />
                 </div>
                 <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1">

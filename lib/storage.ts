@@ -80,7 +80,6 @@ function getLocalShops(): Shop[] {
       return INITIAL_MOCK_SHOPS;
     }
     const parsed = JSON.parse(raw);
-    // Ensure demo shop always exists and is marked as demo
     const hasDemo = parsed.some((s: Shop) => isDemoShop(s.slug) || isDemoShop(s.id));
     if (!hasDemo) {
       const merged = [...INITIAL_MOCK_SHOPS, ...parsed];
@@ -136,6 +135,35 @@ function saveLocalProducts(products: Product[]) {
   localStorage.setItem(LOCAL_STORAGE_PRODUCTS_KEY, JSON.stringify(products));
 }
 
+// Helper to save shop locally
+function createShopLocally(shopPayload: { name: string; slug: string; telegram_username: string; admin_pin: string }): Shop {
+  const shops = getLocalShops();
+  const newShop: Shop = {
+    id: 'shop_' + Math.random().toString(36).substring(2, 9) + Date.now().toString(36),
+    ...shopPayload,
+    is_demo: false,
+    created_at: new Date().toISOString(),
+  };
+
+  const updatedShops = [newShop, ...shops];
+  saveLocalShops(updatedShops);
+
+  // Add sample product to new shop for instant demonstration
+  const sampleProduct: Product = {
+    id: 'prod_' + Math.random().toString(36).substring(2, 9),
+    shop_id: newShop.id,
+    title: 'Birinchi Mahsulotingiz',
+    price: 150000,
+    image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
+    description: "Bu sizning birinchi mahsulotingiz. Admin paneldan bemalol tahrirlashingiz yoki yangilarini qo'shishingiz mumkin.",
+    created_at: new Date().toISOString(),
+  };
+  const products = getLocalProducts();
+  saveLocalProducts([sampleProduct, ...products]);
+
+  return newShop;
+}
+
 // ==============================================================================
 // PUBLIC API FUNCTIONS
 // ==============================================================================
@@ -157,11 +185,12 @@ export async function getShopBySlug(slug: string): Promise<Shop | null> {
         .maybeSingle();
 
       if (error) {
-        console.error('Error fetching shop from Supabase:', error);
+        console.error('[Supabase] getShopBySlug error:', error.message);
+      } else if (data) {
+        return data as Shop;
       }
-      if (data) return data as Shop;
-    } catch (err) {
-      console.error('Supabase query error in getShopBySlug:', err);
+    } catch (err: any) {
+      console.warn('[Supabase] Network/connection error in getShopBySlug, fallback to local storage:', err.message);
     }
   }
 
@@ -185,11 +214,12 @@ export async function getProductsByShopId(shopId: string): Promise<Product[]> {
         .order('created_at', { ascending: false });
 
       if (error) {
-        console.error('Error fetching products from Supabase:', error);
+        console.error('[Supabase] getProductsByShopId error:', error.message);
+      } else if (data && data.length > 0) {
+        return data as Product[];
       }
-      if (data) return data as Product[];
-    } catch (err) {
-      console.error('Supabase query error in getProductsByShopId:', err);
+    } catch (err: any) {
+      console.warn('[Supabase] Network/connection error in getProductsByShopId, fallback to local storage:', err.message);
     }
   }
 
@@ -215,65 +245,64 @@ export async function createShop(
     admin_pin: input.admin_pin.trim(),
   };
 
+  // 1. Agar Supabase sozlangan bo'lsa, avval Supabase'ga yozishga urinib ko'ramiz
   if (isSupabaseConfigured()) {
     try {
-      // Check if slug exists
-      const { data: existing } = await supabase
+      // Check if slug exists in Supabase
+      const { data: existing, error: checkError } = await supabase
         .from('shops')
         .select('id')
         .eq('slug', normalizedSlug)
         .maybeSingle();
 
-      if (existing) {
+      if (checkError) {
+        console.warn('[Supabase] Slug check failed:', checkError.message);
+      } else if (existing) {
         return { shop: null, error: "Ushbu do'kon manzili (slug) band. Iltimos, boshqa nom tanlang." };
       }
 
-      const { data, error } = await supabase
+      // Insert shop into Supabase
+      const { data, error: insertError } = await supabase
         .from('shops')
         .insert([shopPayload])
         .select()
         .single();
 
-      if (error) {
-        console.error('Supabase insert error:', error);
-        return { shop: null, error: error.message };
+      if (insertError) {
+        console.error('[Supabase] Insert error:', insertError);
+        // If it's a unique constraint error
+        if (insertError.code === '23505' || insertError.message.toLowerCase().includes('unique')) {
+          return { shop: null, error: "Ushbu do'kon manzili (slug) allaqachon mavjud." };
+        }
+        throw new Error(insertError.message);
       }
 
-      return { shop: data as Shop };
+      if (data) {
+        console.log('[Supabase] Do\'kon muvaffaqiyatli yaratildi:', data);
+        // Also save a copy to local storage for offline resilience
+        createShopLocally(shopPayload);
+        return { shop: data as Shop };
+      }
     } catch (err: any) {
-      return { shop: null, error: err.message || 'Xatolik yuz berdi' };
+      console.warn('[Storage] Supabase ulanishida xatolik yuz berdi (Failed to fetch). LocalStorage rejimiga o\'tilmoqda:', err);
+      // Agar Supabase tarmoq xatosi yoki "Failed to fetch" bersa, foydalanuvchi to'xtab qolmasligi uchun LocalStorage'ga yozamiz
+      const shops = getLocalShops();
+      if (shops.some((s) => s.slug.toLowerCase() === normalizedSlug)) {
+        return { shop: null, error: "Ushbu do'kon manzili (slug) band. Iltimos, boshqa nom tanlang." };
+      }
+
+      const localShop = createShopLocally(shopPayload);
+      return { shop: localShop };
     }
   }
 
-  // Local Storage Fallback
+  // 2. Local Storage Fallback (agar Supabase ulanmagan bo'lsa)
   const shops = getLocalShops();
   if (shops.some((s) => s.slug.toLowerCase() === normalizedSlug)) {
     return { shop: null, error: "Ushbu do'kon manzili (slug) band. Iltimos, boshqa nom tanlang." };
   }
 
-  const newShop: Shop = {
-    id: 'shop_' + Math.random().toString(36).substring(2, 9) + Date.now().toString(36),
-    ...shopPayload,
-    is_demo: false,
-    created_at: new Date().toISOString(),
-  };
-
-  const updatedShops = [newShop, ...shops];
-  saveLocalShops(updatedShops);
-
-  // Add sample product to new shop for instant demonstration
-  const sampleProduct: Product = {
-    id: 'prod_' + Math.random().toString(36).substring(2, 9),
-    shop_id: newShop.id,
-    title: 'Birinchi Mahsulotingiz',
-    price: 150000,
-    image_url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
-    description: "Bu sizning birinchi mahsulotingiz. Admin paneldan bemalol tahrirlashingiz yoki yangilarini qo'shishingiz mumkin.",
-    created_at: new Date().toISOString(),
-  };
-  const products = getLocalProducts();
-  saveLocalProducts([sampleProduct, ...products]);
-
+  const newShop = createShopLocally(shopPayload);
   return { shop: newShop };
 }
 
@@ -345,13 +374,12 @@ export async function createProduct(
         .single();
 
       if (error) {
-        console.error('Supabase product insert error:', error);
-        return { product: null, error: error.message };
+        console.error('[Supabase] product insert error:', error);
+      } else if (data) {
+        return { product: data as Product };
       }
-
-      return { product: data as Product };
     } catch (err: any) {
-      return { product: null, error: err.message || 'Mahsulot qo‘shishda xatolik' };
+      console.warn('[Supabase] Failed to insert product, saving locally:', err.message);
     }
   }
 
@@ -388,13 +416,12 @@ export async function upgradeShopToPro(
         .maybeSingle();
 
       if (error) {
-        return { success: false, error: error.message };
-      }
-      if (data) {
+        console.error('[Supabase] upgradeShopToPro error:', error);
+      } else if (data) {
         return { success: true, shop: data as Shop };
       }
     } catch (err: any) {
-      return { success: false, error: err.message || "Xatolik yuz berdi" };
+      console.warn('[Supabase] upgrade error, falling back to local storage:', err.message);
     }
   }
 
@@ -447,11 +474,12 @@ export async function updateProduct(
         .single();
 
       if (error) {
-        return { product: null, error: error.message };
+        console.error('[Supabase] updateProduct error:', error);
+      } else if (data) {
+        return { product: data as Product };
       }
-      return { product: data as Product };
     } catch (err: any) {
-      return { product: null, error: err.message || 'Tahrirlashda xatolik' };
+      console.warn('[Supabase] updateProduct network error:', err.message);
     }
   }
 
@@ -494,11 +522,12 @@ export async function deleteProduct(
     try {
       const { error } = await supabase.from('products').delete().eq('id', id);
       if (error) {
-        return { success: false, error: error.message };
+        console.error('[Supabase] deleteProduct error:', error);
+      } else {
+        return { success: true };
       }
-      return { success: true };
     } catch (err: any) {
-      return { success: false, error: err.message || 'O‘chirishda xatolik' };
+      console.warn('[Supabase] deleteProduct network error:', err.message);
     }
   }
 
@@ -520,10 +549,12 @@ export async function deleteProduct(
 export async function getAllFeaturedShops(): Promise<Shop[]> {
   if (isSupabaseConfigured()) {
     try {
-      const { data } = await supabase.from('shops').select('*').limit(6);
-      if (data && data.length > 0) return data as Shop[];
-    } catch {
-      // Fall through to local mock
+      const { data, error } = await supabase.from('shops').select('*').limit(6);
+      if (!error && data && data.length > 0) {
+        return data as Shop[];
+      }
+    } catch (err: any) {
+      console.warn('[Supabase] getAllFeaturedShops error:', err.message);
     }
   }
   return getLocalShops();
