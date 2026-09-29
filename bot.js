@@ -218,7 +218,7 @@ bot.start(async (ctx) => {
     const { data: shop, error } = await supabase
       .from('shops')
       .select('*')
-      .eq('slug', storeSlug)
+      .or(`slug.ilike.${storeSlug},name.ilike.${storeSlug}`)
       .maybeSingle();
 
     if (error) {
